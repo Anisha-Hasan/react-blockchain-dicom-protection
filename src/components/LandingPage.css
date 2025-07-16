@@ -1,0 +1,72 @@
+.hero-container {
+  background: radial-gradient(
+    circle at 5% 15%,
+    #f7d7b1 0%,        
+    #7450b4 20%,
+    #2f3267 40%,    
+    #04040c 90%
+  );
+  height: 100vh;
+  display: flex;              
+  justify-content: space-between;  /* Push left & right sides apart */
+  align-items: center;
+  padding: 0 5%;              /* Add side padding for breathing room */
+  position: relative;
+}
+
+.hero-container::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(
+    circle at top left,
+    rgba(255, 200, 150, 0.2) 0%,
+    transparent 50%
+  );
+  z-index: 1;
+}
+
+.hero-content .btn {
+  background-color: #04040c !important;
+  border-color: #04040c !important;
+  color: #fff !important;
+}
+
+.hero-content .btn:hover {
+  background-color: #333 !important;  /* noticeable lighter */
+  border-color: #333 !important;
+  color: #fff !important;
+}
+
+
+.hero-content h1 {
+  font-size: 3rem;   /* Make it bigger: try 3rem or 4rem if you want */
+  color: #04040c;    /* Change to black (or near-black) */
+}
+
+.hero-content p {
+  font-size: 1.5rem;   /* Increase size */
+  color: #fff;         /* Make it white */
+  margin-top: 1rem;    /* Optional: add a bit of spacing below heading */
+}
+
+
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 50%;  /* Controls width of text/buttons block */
+}
+
+.hero-image {
+  position: relative;
+  z-index: 2;
+  max-width: 40%;   /* Controls width of right image */
+}
+
+.hero-image img {
+  width: 100%;
+  height: auto;
+}
+

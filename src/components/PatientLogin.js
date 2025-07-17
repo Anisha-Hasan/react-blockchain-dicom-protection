@@ -31,31 +31,33 @@ function PatientLogin() {
   };
 
   return (
-    <div className="form-container">
-      <h2 className="mb-4">Patient Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label>Patient ID</label>
-          <input
-            type="text"
-            className="form-control"
-            value={patientID}
-            onChange={(e) => setPatientID(e.target.value)}
-            placeholder="Enter your Patient ID"
-          />
-        </div>
-        <div className="mb-3">
-          <label>Password</label>
-          <input
-            type="password"
-            className="form-control"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">Login</button>
-      </form>
+    <div className="login-hero">
+      <div className="form-container">
+        <h2 className="mb-4">Patient Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label>Patient ID/ Mobile No.</label>
+            <input
+             type="text"
+             className="form-control"
+             value={patientID}
+             onChange={(e) => setPatientID(e.target.value)}
+             placeholder="Enter your Patient ID/ Registered Mobile No."
+            />
+          </div>
+          <div className="mb-3">
+            <label>Password</label>
+            <input
+              type="password"
+              className="form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+            />
+          </div>
+          <button type="submit" className="btn btn-primary">Login</button>
+        </form>
+      </div>
     </div>
   );
 }

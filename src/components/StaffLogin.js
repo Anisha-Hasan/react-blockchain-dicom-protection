@@ -31,7 +31,8 @@ function StaffLogin() {
   };
 
   return (
-    <div className="form-container">
+    <div className="login-hero">
+      <div className="form-container">
       <h2 className="mb-4">Staff Login</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -57,7 +58,8 @@ function StaffLogin() {
         <button type="submit" className="btn btn-success">
           Login
         </button>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Form.css'; 
 import { useNavigate } from 'react-router-dom';
 
 function PatientLogin() {
@@ -30,7 +31,7 @@ function PatientLogin() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="form-container">
       <h2 className="mb-4">Patient Login</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">

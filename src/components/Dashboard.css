@@ -1,0 +1,37 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background: #04040c;
+  color: #fff;
+  padding: 30px 20px;
+}
+
+.sidebar h2 {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+  cursor: pointer;
+}
+
+.sidebar ul li:hover {
+  color: #7450b4;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 40px;
+  background: radial-gradient(circle at top left, #f7d7b1 0%, #7450b4 20%, #2f3267 40%, #04040c 90%);
+  color: #fff;
+}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Dashboard.css';
 
 function StaffDashboard() {
-  const [section, setSection] = useState('profile');
+  const [section, setSection] = useState('welcome'); // default to welcome
 
   const staffName = 'Dr. Smith';
 
@@ -22,7 +22,10 @@ function StaffDashboard() {
     <div className="dashboard-container">
       {/* Sidebar */}
       <aside className="sidebar">
-        <h2>Staff Dashboard</h2>
+        {/* ✅ clickable welcome */}
+        <h2 onClick={() => setSection('welcome')} style={{ cursor: 'pointer' }}>
+          Home
+        </h2>
         <ul>
           <li onClick={() => setSection('profile')}>Profile Settings</li>
           <li onClick={() => setSection('requests')}>My Requests</li>
@@ -34,10 +37,17 @@ function StaffDashboard() {
 
       {/* Main Content */}
       <main className="main-content">
+        {section === 'welcome' && (
+          <div>
+            <h2>Welcome <span className="highlight">{staffName}!</span></h2>
+            <p>Here’s a quick look at your dashboard. (Add stats/shortcuts later)</p>
+          </div>
+        )}
+
         {section === 'profile' && (
           <div>
-            <h2>Welcome, {staffName}!</h2>
-            <p>Profile settings will go here. (Coming soon!)</p>
+            <h2>Profile Settings</h2>
+            <p>Change your profile info, password, or photo here. (Coming soon!)</p>
           </div>
         )}
 

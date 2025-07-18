@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Dashboard.css';
 
 function PatientDashboard() {
-  const [section, setSection] = useState('profile');
+  const [section, setSection] = useState('welcome'); // 👈 Start with welcome
 
   const patientName = 'Mark';
 
@@ -10,7 +10,10 @@ function PatientDashboard() {
     <div className="dashboard-container">
       {/* Sidebar */}
       <aside className="sidebar">
-        <h2>Patient Dashboard</h2>
+        {/* 👇 Make heading clickable */}
+        <h2 onClick={() => setSection('welcome')} style={{ cursor: 'pointer' }}>
+          Home
+        </h2>
         <ul>
           <li onClick={() => setSection('profile')}>Profile Settings</li>
           <li onClick={() => setSection('requests')}>Access Requests</li>
@@ -23,30 +26,41 @@ function PatientDashboard() {
 
       {/* Main Content */}
       <main className="main-content">
-        {section === 'profile' && (
+        {section === 'welcome' && (
           <div>
-            <h2>Welcome back, {patientName}!</h2>
-            <p>This is your profile section. (Coming soon!)</p>
+            <h2>Welcome back, <span className="highlight">{patientName}!</span></h2>
+            <p>Check recent activity, new requests, and your DICOM files at a glance.</p>
           </div>
         )}
+
+        {section === 'profile' && (
+          <div>
+            <h2>Profile Settings</h2>
+            <p>Update your info, change password, or manage your profile photo. (Coming soon!)</p>
+          </div>
+        )}
+
         {section === 'requests' && (
           <div>
             <h2>Access Requests</h2>
             <p>List of requests from doctors or staff. (Coming soon!)</p>
           </div>
         )}
+
         {section === 'dicoms' && (
           <div>
             <h2>My DICOMs</h2>
-            <p>View your DICOM files here. (Coming soon!)</p>
+            <p>View and manage your medical images here. (Coming soon!)</p>
           </div>
         )}
+
         {section === 'log' && (
           <div>
             <h2>Access Log</h2>
             <p>See who accessed your data and when. (Coming soon!)</p>
           </div>
         )}
+
         {section === 'help' && (
           <div>
             <h2>Help / About</h2>

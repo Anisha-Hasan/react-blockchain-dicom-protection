@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
 
 function PatientDashboard() {
-  const [section, setSection] = useState('welcome'); // 👈 Start with welcome
+  const [section, setSection] = useState('welcome'); // Start with welcome page
 
   const patientName = 'Mark';
 
@@ -10,9 +11,9 @@ function PatientDashboard() {
     <div className="dashboard-container">
       {/* Sidebar */}
       <aside className="sidebar">
-        {/* 👇 Make heading clickable */}
+        {/* Clickable heading goes to Welcome */}
         <h2 onClick={() => setSection('welcome')} style={{ cursor: 'pointer' }}>
-          Home
+          MyHealth
         </h2>
         <ul>
           <li onClick={() => setSection('profile')}>Profile Settings</li>
@@ -29,15 +30,12 @@ function PatientDashboard() {
         {section === 'welcome' && (
           <div>
             <h2>Welcome back, <span className="highlight">{patientName}!</span></h2>
-            <p>Check recent activity, new requests, and your DICOM files at a glance.</p>
+            <p>Check your recent activity, view new access requests, and manage your DICOM files easily from here.</p>
           </div>
         )}
 
         {section === 'profile' && (
-          <div>
-            <h2>Profile Settings</h2>
-            <p>Update your info, change password, or manage your profile photo. (Coming soon!)</p>
-          </div>
+          <ProfileSettings name={patientName} uniqueId="P001" role="Patient" />
         )}
 
         {section === 'requests' && (
@@ -64,7 +62,7 @@ function PatientDashboard() {
         {section === 'help' && (
           <div>
             <h2>Help / About</h2>
-            <p>Learn more about this system. (Coming soon!)</p>
+            <p>Learn more about this system and how to keep your data secure. (Coming soon!)</p>
           </div>
         )}
       </main>

@@ -1,16 +1,16 @@
 .hero-container {
   background: radial-gradient(
     circle at 5% 15%,
-    #f7d7b1 0%,        
+    #f7d7b1 0%,
     #7450b4 20%,
-    #2f3267 40%,    
+    #2f3267 40%,
     #04040c 90%
   );
   height: 100vh;
-  display: flex;              
-  justify-content: space-between;  /* Push left & right sides apart */
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 0 5%;              /* Add side padding for breathing room */
+  padding: 0 5%;
   position: relative;
 }
 
@@ -27,6 +27,30 @@
   z-index: 1;
 }
 
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 50%;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  color: #04040c;
+}
+
+.hero-content p {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-top: 1rem;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 20px;  /* ✅ modern spacing between buttons */
+  flex-wrap: wrap;  /* ✅ wrap nicely on smaller screens */
+  margin-top: 2rem;
+}
+
 .hero-content .btn {
   background-color: #04040c !important;
   border-color: #04040c !important;
@@ -34,39 +58,18 @@
 }
 
 .hero-content .btn:hover {
-  background-color: #333 !important;  /* noticeable lighter */
+  background-color: #333 !important;
   border-color: #333 !important;
   color: #fff !important;
-}
-
-
-.hero-content h1 {
-  font-size: 3rem;   /* Make it bigger: try 3rem or 4rem if you want */
-  color: #04040c;    /* Change to black (or near-black) */
-}
-
-.hero-content p {
-  font-size: 1.5rem;   /* Increase size */
-  color: #fff;         /* Make it white */
-  margin-top: 1rem;    /* Optional: add a bit of spacing below heading */
-}
-
-
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  max-width: 50%;  /* Controls width of text/buttons block */
 }
 
 .hero-image {
   position: relative;
   z-index: 2;
-  max-width: 40%;   /* Controls width of right image */
+  max-width: 40%;
 }
 
 .hero-image img {
   width: 100%;
   height: auto;
 }
-

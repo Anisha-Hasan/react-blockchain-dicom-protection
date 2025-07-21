@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import ProfileSettings from './ProfileSettings'; // ✅ Import it!
+import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
 
-function StaffDashboard() {
+function DoctorDashboard() {
   const [section, setSection] = useState('welcome');
 
-  const staffName = 'Dr. Smith';
+  const DoctorName = 'Dr. Smith';
 
   const requests = [
     { id: 1, patient: 'Mark', status: 'Approved' },
@@ -24,7 +24,7 @@ function StaffDashboard() {
       {/* Sidebar */}
       <aside className="sidebar">
         <h2 onClick={() => setSection('welcome')} style={{ cursor: 'pointer' }}>
-          StaffPortal
+          DoctorPortal
         </h2>
         <ul>
           <li onClick={() => setSection('profile')}>Profile Settings</li>
@@ -39,13 +39,13 @@ function StaffDashboard() {
       <main className="main-content">
         {section === 'welcome' && (
           <div>
-            <h2>Welcome <span className="highlight">{staffName}!</span></h2>
+            <h2>Welcome <span className="highlight">{DoctorName}!</span></h2>
             <p>Here’s a quick look at your dashboard. (You can add stats and shortcuts later!)</p>
           </div>
         )}
 
         {section === 'profile' && (
-          <ProfileSettings name={staffName} uniqueId="S001" role="Staff" />
+          <ProfileSettings name={DoctorName} uniqueId="S001" role="Doctor" />
         )}
 
         {section === 'requests' && (
@@ -110,4 +110,4 @@ function StaffDashboard() {
   );
 }
 
-export default StaffDashboard;
+export default DoctorDashboard;

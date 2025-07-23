@@ -1,26 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
 
 function PatientDashboard() {
-  const [section, setSection] = useState('welcome'); // Start with welcome page
+  const [section, setSection] = useState('welcome');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  const sidebarRef = useRef(null);
   const patientName = 'Mark';
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target) &&
+        !event.target.classList.contains('hamburger')
+      ) {
+        closeSidebar();
+      }
+    };
+
+    if (isSidebarOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isSidebarOpen]);
+
   return (
-    <div className="dashboard-container">
+    <div className={`dashboard-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+      {/* Hamburger */}
+      <div className="hamburger" onClick={toggleSidebar}>
+        &#9776;
+      </div>
+
       {/* Sidebar */}
-      <aside className="sidebar">
-        {/* Clickable heading goes to Welcome */}
-        <h2 onClick={() => setSection('welcome')} style={{ cursor: 'pointer' }}>
+      <aside ref={sidebarRef} className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
+        <h2 onClick={() => { setSection('welcome'); closeSidebar(); }} style={{ cursor: 'pointer' }}>
           MyHealth
         </h2>
         <ul>
-          <li onClick={() => setSection('profile')}>Profile Settings</li>
-          <li onClick={() => setSection('requests')}>Access Requests</li>
-          <li onClick={() => setSection('dicoms')}>My DICOMs</li>
-          <li onClick={() => setSection('log')}>Access Log</li>
-          <li onClick={() => setSection('help')}>Help/About</li>
+          <li onClick={() => { setSection('profile'); closeSidebar(); }}>Profile Settings</li>
+          <li onClick={() => { setSection('requests'); closeSidebar(); }}>Access Requests</li>
+          <li onClick={() => { setSection('dicoms'); closeSidebar(); }}>My DICOMs</li>
+          <li onClick={() => { setSection('log'); closeSidebar(); }}>Access Log</li>
+          <li onClick={() => { setSection('help'); closeSidebar(); }}>Help/About</li>
           <li onClick={() => alert('Logging out')} style={{ color: 'red' }}>Logout</li>
         </ul>
       </aside>

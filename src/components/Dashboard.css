@@ -1,30 +1,59 @@
 .dashboard-container {
-  display: flex;
-  height: 100vh;
+  position: relative;
+  min-height: 100vh;
   background: radial-gradient(
     circle at 5% 15%,
-    #f7e5c1 0%,     /* light creamy center */
-    #f7d7b1 40%,    /* warm yellow */
-    #f7d7b1 95%,    /* soft deeper yellow */
-    #f2c58d 100%
+    #f7d7b1 0%,
+    #7450b4 20%,
+    #2f3267 40%,
+    #04040c 90%
   );
 }
 
-.sidebar {
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(180deg, #5c3c94, #2f3267, #04040c);
-  width: 250px;
-  padding: 2rem 1rem;
+/* Hamburger icon */
+.hamburger {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1200;
   color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  box-shadow: 4px 0 12px rgba(0,0,0,0.2);
+  transition: left 0.3s ease;
+}
+
+/* Hide hamburger when sidebar is open */
+.dashboard-container.sidebar-open .hamburger {
+  display: none;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px; /* Hidden by default */
+  width: 250px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* Same dark semi-transparent */
+  backdrop-filter: blur(12px);     /* Frosted glass effect */
+  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  border-right: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+  box-shadow: 4px 0 32px rgba(0, 0, 0, 0.2); /* Like your form */
+  padding: 2rem 1rem;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  border-radius: 0; /* Square corners for sidebar */
+}
+
+
+.sidebar.open {
+  left: 0;
 }
 
 .sidebar h2 {
   font-size: 1.5rem;
   margin-bottom: 30px;
+  padding-left: 10px; 
+  color: #fff;
 }
 
 .sidebar ul {
@@ -33,34 +62,34 @@
 }
 
 .sidebar ul li {
+  position: relative; /* Needed for ::after */
   margin: 15px 0;
   cursor: pointer;
+  color: #fff; /* White text */
+  padding: 8px 12px;
+  transition: color 0.2s ease;
+}
+
+.sidebar ul li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background: #fff; /* Purple underline */
+  transition: width 0.3s ease;
+}
+
+.sidebar ul li:hover::after {
+  width: 100%; /* Slide in underline */
 }
 
 .sidebar ul li:hover {
-  color: #f7d7b1;
+  color: #fff; /* Keep text white */
 }
 
 .main-content {
-  flex-grow: 1;
-  margin: 40px;
-  padding: 40px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  border-radius: 12px;
-  color: #2f3267;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-.main-content h2 {
-  color: #2f3267;
-  font-size: 2.2rem;
-}
-
-.main-content p {
-  color: #333;
-}
-
-.main-content .highlight {
-  color: #7450b4;
+  padding: 70px 350px 40px 120px; /* top, right, bottom, left */
+  color: #fff;
 }

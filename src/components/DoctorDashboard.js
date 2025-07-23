@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
 
 function DoctorDashboard() {
   const [section, setSection] = useState('welcome');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const DoctorName = 'Dr. Smith';
 
@@ -19,18 +20,55 @@ function DoctorDashboard() {
     { id: 'P003', name: 'John', permission: 'Declined' },
   ];
 
+  const sidebarRef = useRef(null);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target) &&
+        !event.target.classList.contains('hamburger')
+      ) {
+        closeSidebar();
+      }
+    };
+
+    if (isSidebarOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isSidebarOpen]);
+
   return (
-    <div className="dashboard-container">
+    <div className={`dashboard-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+      {/* Hamburger */}
+      <div className="hamburger" onClick={toggleSidebar}>
+        &#9776;
+      </div>
+
       {/* Sidebar */}
-      <aside className="sidebar">
-        <h2 onClick={() => setSection('welcome')} style={{ cursor: 'pointer' }}>
+      <aside ref={sidebarRef} className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
+        <h2 onClick={() => { setSection('welcome'); closeSidebar(); }} style={{ cursor: 'pointer' }}>
           DoctorPortal
         </h2>
         <ul>
-          <li onClick={() => setSection('profile')}>Profile Settings</li>
-          <li onClick={() => setSection('requests')}>My Requests</li>
-          <li onClick={() => setSection('patients')}>My Patients</li>
-          <li onClick={() => setSection('help')}>Help/About</li>
+          <li onClick={() => { setSection('profile'); closeSidebar(); }}>Profile Settings</li>
+          <li onClick={() => { setSection('requests'); closeSidebar(); }}>My Requests</li>
+          <li onClick={() => { setSection('patients'); closeSidebar(); }}>My Patients</li>
+          <li onClick={() => { setSection('help'); closeSidebar(); }}>Help/About</li>
           <li onClick={() => alert('Logging out')} style={{ color: 'red' }}>Logout</li>
         </ul>
       </aside>

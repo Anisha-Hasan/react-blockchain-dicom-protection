@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
-
 import crypto from 'crypto-js';
 
 function StaffDashboard() {
   const [section, setSection] = useState('welcome');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const staffName = 'John Doe'; 
+  const staffName = 'John Doe';
 
   const [patientID, setPatientID] = useState('');
   const [patientName, setPatientName] = useState('');
@@ -18,6 +17,30 @@ function StaffDashboard() {
   const [status, setStatus] = useState('');
 
   const sidebarRef = useRef(null);
+
+  // ✅ Dummy log data
+  const uploadLog = [
+    {
+      id: 1,
+      patientID: 'P001',
+      patientName: 'Mark',
+      fileName: 'brain_scan.dcm',
+      uploadedAt: '2025-07-22 14:35',
+      status: 'Success',
+      hash: 'c9f0f895fb98ab9159f51fd0297e236d',
+      ipfs: 'https://ipfs.io/ipfs/QmExampleCID1',
+    },
+    {
+      id: 2,
+      patientID: 'P002',
+      patientName: 'Sarah',
+      fileName: 'chest_scan.dcm',
+      uploadedAt: '2025-07-22 15:10',
+      status: 'Success',
+      hash: '45c48cce2e2d7fbdea1afc51c7c6ad26',
+      ipfs: 'https://ipfs.io/ipfs/QmExampleCID2',
+    },
+  ];
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -59,7 +82,6 @@ function StaffDashboard() {
     setIsSidebarOpen(false);
   };
 
-  // ✅ Close sidebar when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -91,15 +113,51 @@ function StaffDashboard() {
 
       {/* Sidebar */}
       <aside ref={sidebarRef} className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-        <h2 onClick={() => { setSection('welcome'); closeSidebar(); }} style={{ cursor: 'pointer' }}>
+        <h2
+          onClick={() => {
+            setSection('welcome');
+            closeSidebar();
+          }}
+          style={{ cursor: 'pointer' }}
+        >
           StaffPortal
         </h2>
         <ul>
-          <li onClick={() => { setSection('profile'); closeSidebar(); }}>Settings</li>
-          <li onClick={() => { setSection('upload'); closeSidebar(); }}>Upload DICOM</li>
-          <li onClick={() => { setSection('log'); closeSidebar(); }}>Upload Log</li>
-          <li onClick={() => { setSection('help'); closeSidebar(); }}>Help/About</li>
-          <li onClick={() => alert('Logging out')} style={{ color: 'red' }}>Logout</li>
+          <li
+            onClick={() => {
+              setSection('profile');
+              closeSidebar();
+            }}
+          >
+            Settings
+          </li>
+          <li
+            onClick={() => {
+              setSection('upload');
+              closeSidebar();
+            }}
+          >
+            Upload DICOM
+          </li>
+          <li
+            onClick={() => {
+              setSection('log');
+              closeSidebar();
+            }}
+          >
+            Upload Log
+          </li>
+          <li
+            onClick={() => {
+              setSection('help');
+              closeSidebar();
+            }}
+          >
+            Help/About
+          </li>
+          <li onClick={() => alert('Logging out')} style={{ color: 'red' }}>
+            Logout
+          </li>
         </ul>
       </aside>
 
@@ -107,14 +165,14 @@ function StaffDashboard() {
       <main className="main-content">
         {section === 'welcome' && (
           <div>
-            <h2>Welcome <span className="highlight">{staffName}!</span></h2>
+            <h2>
+              Welcome <span className="highlight">{staffName}!</span>
+            </h2>
             <p>Use the menu to upload DICOMs or manage your profile.</p>
           </div>
         )}
 
-        {section === 'profile' && (
-          <ProfileSettings name={staffName} uniqueId="ST001" role="Staff" />
-        )}
+        {section === 'profile' && <ProfileSettings name={staffName} uniqueId="ST001" role="Staff" />}
 
         {section === 'upload' && (
           <div>
@@ -182,7 +240,38 @@ function StaffDashboard() {
         {section === 'log' && (
           <div>
             <h2>Upload Log</h2>
-            <p>Coming soon: View all uploaded DICOMs with timestamps and status.</p>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Patient ID</th>
+                  <th>Patient Name</th>
+                  <th>File</th>
+                  <th>Uploaded At</th>
+                  <th>Status</th>
+                  <th>Hash</th>
+                  <th>IPFS Link</th>
+                </tr>
+              </thead>
+              <tbody>
+                {uploadLog.map((log) => (
+                  <tr key={log.id}>
+                    <td>{log.id}</td>
+                    <td>{log.patientID}</td>
+                    <td>{log.patientName}</td>
+                    <td>{log.fileName}</td>
+                    <td>{log.uploadedAt}</td>
+                    <td>{log.status}</td>
+                    <td>{log.hash.slice(0, 10)}...</td>
+                    <td>
+                      <a href={log.ipfs} target="_blank" rel="noreferrer">
+                        Link
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
 

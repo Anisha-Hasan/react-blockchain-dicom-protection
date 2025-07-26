@@ -6,12 +6,13 @@ function DoctorDashboard() {
   const [section, setSection] = useState('welcome');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const DoctorName = 'Dr. Smith';
+  const sidebarRef = useRef(null);
+  const doctorName = 'Dr. Smith';
 
   const requests = [
-    { id: 1, patient: 'Mark', status: 'Approved' },
-    { id: 2, patient: 'Sarah', status: 'Pending' },
-    { id: 3, patient: 'John', status: 'Declined' },
+    { id: 1, patient: 'Mark', reason: 'MRI Review', date: '2025-07-21', status: 'Approved' },
+    { id: 2, patient: 'Sarah', reason: 'Consult', date: '2025-07-20', status: 'Pending' },
+    { id: 3, patient: 'John', reason: 'Follow-up', date: '2025-07-19', status: 'Declined' },
   ];
 
   const patients = [
@@ -19,8 +20,6 @@ function DoctorDashboard() {
     { id: 'P002', name: 'Sarah', permission: 'Pending' },
     { id: 'P003', name: 'John', permission: 'Declined' },
   ];
-
-  const sidebarRef = useRef(null);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -77,70 +76,103 @@ function DoctorDashboard() {
       <main className="main-content">
         {section === 'welcome' && (
           <div>
-            <h2>Welcome <span className="highlight">{DoctorName}!</span></h2>
-            <p>Here’s a quick look at your dashboard. (You can add stats and shortcuts later!)</p>
+            <h2>Welcome <span className="highlight">{doctorName}!</span></h2>
+            <p>Use this portal to manage your requests and patients securely.</p>
           </div>
         )}
 
         {section === 'profile' && (
-          <ProfileSettings name={DoctorName} uniqueId="S001" role="Doctor" />
+          <ProfileSettings name={doctorName} uniqueId="D001" role="Doctor" />
         )}
 
         {section === 'requests' && (
           <div>
             <h2>My Requests</h2>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Request ID</th>
-                  <th>Patient</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {requests.map((req) => (
-                  <tr key={req.id}>
-                    <td>{req.id}</td>
-                    <td>{req.patient}</td>
-                    <td>{req.status}</td>
+            <button className="btn btn-primary mb-2">+ New Request</button>
+            {requests.length > 0 ? (
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Patient</th>
+                    <th>Reason</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {requests.map((req) => (
+                    <tr key={req.id}>
+                      <td>{req.id}</td>
+                      <td>{req.patient}</td>
+                      <td>{req.reason}</td>
+                      <td>{req.date}</td>
+                      <td>
+                        <span className={`badge ${req.status.toLowerCase()}`}>
+                          {req.status}
+                        </span>
+                      </td>
+                      <td>
+                        {req.status === 'Pending' && (
+                          <button className="btn btn-danger btn-sm">Cancel</button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p>No requests yet.</p>
+            )}
           </div>
         )}
 
         {section === 'patients' && (
           <div>
             <h2>My Patients</h2>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Patient ID</th>
-                  <th>Name</th>
-                  <th>Permission Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {patients.map((p) => (
-                  <tr key={p.id}>
-                    <td>{p.id}</td>
-                    <td>{p.name}</td>
-                    <td>{p.permission}</td>
+            {patients.length > 0 ? (
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Patient ID</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {patients.map((p) => (
+                    <tr key={p.id}>
+                      <td>{p.id}</td>
+                      <td>{p.name}</td>
+                      <td>
+                        <span className={`badge ${p.permission.toLowerCase()}`}>
+                          {p.permission}
+                        </span>
+                      </td>
+                      <td>
+                        {p.permission === 'Granted' && (
+                          <button className="btn btn-primary btn-sm">View DICOMs</button>
+                        )}
+                        {p.permission !== 'Granted' && (
+                          <button className="btn btn-secondary btn-sm">Request Access</button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p>No patients yet.</p>
+            )}
           </div>
         )}
 
         {section === 'help' && (
           <div>
             <h2>Help / About</h2>
-            <p>
-              This system allows medical staff to request and manage access to patients’ DICOM medical images securely.
-              If you need help, contact the IT admin or check the user guide.
-            </p>
+            <p>This portal helps you securely request and manage patient DICOM access.</p>
           </div>
         )}
       </main>

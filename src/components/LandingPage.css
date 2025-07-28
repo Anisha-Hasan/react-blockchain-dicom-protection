@@ -6,7 +6,7 @@
     #2f3267 40%,
     #04040c 90%
   );
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -72,4 +72,53 @@
 .hero-image img {
   width: 100%;
   height: auto;
+}
+
+.landing-footer {
+  background: linear-gradient(135deg, #4B0082, #0D0D2B); /* Purple Navy Gradient */
+  padding: 2rem;
+  text-align: center;
+  color: #f0f0f0;
+}
+
+.footer-compliance,
+.footer-powered-by {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.compliance-badges img,
+.tech-logos img {
+  height: 30px;
+  width: auto;
+  filter: brightness(0) invert(1); /* Make logos white-ish on dark bg */
+}
+
+.footer-links {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: #dcdcdc;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer-copyright {
+  margin-top: 1rem;
+  color: #ccc;
+  font-size: 0.9rem;
 }

@@ -5,30 +5,25 @@ import './Dashboard.css';
 function PatientDashboard() {
   const [section, setSection] = useState('welcome');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   const sidebarRef = useRef(null);
   const patientName = 'Mark';
 
-  // ✅ Dummy Access Requests
   const [accessRequests, setAccessRequests] = useState([
     { id: 1, doctor: 'Dr. Smith', reason: 'Needs to review MRI scan', status: 'Pending' },
     { id: 2, doctor: 'Dr. Johnson', reason: 'Consult for treatment plan', status: 'Pending' }
   ]);
 
-  // ✅ Dummy My DICOMs
   const myDicoms = [
     { id: 1, name: 'Brain_MRI.dcm', uploadedBy: 'Staff John Doe', date: '2025-07-23' },
     { id: 2, name: 'Chest_Xray.dcm', uploadedBy: 'Staff Jane Doe', date: '2025-07-20' }
   ];
 
-  // ✅ Dummy Access Log
   const accessLog = [
     { id: 1, doctor: 'Dr. Smith', dicomName: 'Brain_MRI.dcm', date: '2025-07-23', status: 'Granted' },
     { id: 2, doctor: 'Dr. Johnson', dicomName: 'Chest_Xray.dcm', date: '2025-07-22', status: 'Revoked' },
     { id: 3, doctor: 'Dr. Brown', dicomName: 'Spine_CT.dcm', date: '2025-07-21', status: 'Granted' }
   ];
 
-  // ✅ Accept request handler
   const handleAccept = (id) => {
     setAccessRequests((prev) =>
       prev.map((req) =>
@@ -37,7 +32,6 @@ function PatientDashboard() {
     );
   };
 
-  // ✅ Decline request handler
   const handleDecline = (id) => {
     setAccessRequests((prev) =>
       prev.map((req) =>
@@ -76,29 +70,29 @@ function PatientDashboard() {
     };
   }, [isSidebarOpen]);
 
+  const navItemClass = (value) =>
+    `nav-item ${section === value ? 'selected' : ''}`;
+
   return (
     <div className={`dashboard-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
-      {/* Hamburger */}
       <div className="hamburger" onClick={toggleSidebar}>
         &#9776;
       </div>
 
-      {/* Sidebar */}
       <aside ref={sidebarRef} className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-        <h2 onClick={() => { setSection('welcome'); closeSidebar(); }} style={{ cursor: 'pointer' }}>
-          MyHealth
+        <h2 onClick={() => { setSection('welcome'); closeSidebar(); }} style={{ cursor: 'pointer' }} className="gradient-text">
+          My Health
         </h2>
         <ul>
-          <li onClick={() => { setSection('profile'); closeSidebar(); }}>Profile Settings</li>
-          <li onClick={() => { setSection('requests'); closeSidebar(); }}>Access Requests</li>
-          <li onClick={() => { setSection('dicoms'); closeSidebar(); }}>My DICOMs</li>
-          <li onClick={() => { setSection('log'); closeSidebar(); }}>Access Log</li>
-          <li onClick={() => { setSection('help'); closeSidebar(); }}>Help/About</li>
+          <li className={navItemClass('profile')} onClick={() => { setSection('profile'); closeSidebar(); }}>Profile Settings</li>
+          <li className={navItemClass('requests')} onClick={() => { setSection('requests'); closeSidebar(); }}>Access Requests</li>
+          <li className={navItemClass('dicoms')} onClick={() => { setSection('dicoms'); closeSidebar(); }}>My DICOMs</li>
+          <li className={navItemClass('log')} onClick={() => { setSection('log'); closeSidebar(); }}>Access Log</li>
+          <li className={navItemClass('help')} onClick={() => { setSection('help'); closeSidebar(); }}>Help/About</li>
           <li onClick={() => alert('Logging out')} style={{ color: 'red' }}>Logout</li>
         </ul>
       </aside>
 
-      {/* Main Content */}
       <main className="main-content">
         {section === 'welcome' && (
           <div>
@@ -135,17 +129,12 @@ function PatientDashboard() {
                       <td>{req.reason}</td>
                       <td>{req.status}</td>
                       <td>
-                        {req.status === 'Pending' && (
+                        {req.status === 'Pending' ? (
                           <>
-                            <button className="btn btn-success btn-sm" onClick={() => handleAccept(req.id)}>
-                              Accept
-                            </button>{' '}
-                            <button className="btn btn-danger btn-sm" onClick={() => handleDecline(req.id)}>
-                              Decline
-                            </button>
+                            <button className="btn btn-success btn-sm" onClick={() => handleAccept(req.id)}>Accept</button>{' '}
+                            <button className="btn btn-danger btn-sm" onClick={() => handleDecline(req.id)}>Decline</button>
                           </>
-                        )}
-                        {req.status !== 'Pending' && <span>—</span>}
+                        ) : <span>—</span>}
                       </td>
                     </tr>
                   ))}
@@ -179,12 +168,8 @@ function PatientDashboard() {
                       <td>{dicom.uploadedBy}</td>
                       <td>{dicom.date}</td>
                       <td>
-                        <button className="btn btn-primary btn-sm">
-                          Download
-                        </button>{' '}
-                        <button className="btn btn-warning btn-sm">
-                          Revoke Access
-                        </button>
+                        <button className="btn btn-primary btn-sm">Download</button>{' '}
+                        <button className="btn btn-warning btn-sm">Revoke Access</button>
                       </td>
                     </tr>
                   ))}

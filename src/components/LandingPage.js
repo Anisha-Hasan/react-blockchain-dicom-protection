@@ -24,7 +24,7 @@ function LandingPage() {
         </div>
 
         <div className="hero-image">
-          <img src="YOUR_IMAGE_PATH" alt="Illustration" />
+          <img src="/heroi.png" alt="Illustration" />
         </div>
       </div>
 

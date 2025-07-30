@@ -118,7 +118,7 @@ function StaffDashboard() {
             setSection('welcome');
             closeSidebar();
           }}
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer' }} className="gradient-text"
         >
           StaffPortal
         </h2>

@@ -1,20 +1,15 @@
+/* Reset and background */
 body, html {
   margin: 0;
   padding: 0;
   background: #000; /* fallback if needed */
 }
 
-
+/* Main container */
 .dashboard-container {
   position: relative;
   min-height: 100vh;
-  background: radial-gradient(
-    circle at 5% 15%,
-    #f7d7b1 0%,
-    #7450b4 20%,
-    #2f3267 40%,
-    #04040c 90%
-  );
+  background: #04040c;
 }
 
 /* Hamburger icon */
@@ -34,68 +29,82 @@ body, html {
   display: none;
 }
 
+/* Sidebar base styling */
 .sidebar {
   position: fixed;
   top: 0;
   left: -250px; /* Hidden by default */
   width: 250px;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4); /* Same dark semi-transparent */
-  backdrop-filter: blur(12px);     /* Frosted glass effect */
-  -webkit-backdrop-filter: blur(12px); /* Safari support */
-  border-right: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
-  box-shadow: 4px 0 32px rgba(0, 0, 0, 0.2); /* Like your form */
+  background: rgba(0, 0, 0, 0.4); /* Frosted glass effect */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 4px 0 32px rgba(0, 0, 0, 0.2);
   padding: 2rem 1rem;
   transition: left 0.3s ease;
   z-index: 1000;
-  border-radius: 0; /* Square corners for sidebar */
+  border-radius: 0;
 }
-
 
 .sidebar.open {
   left: 0;
 }
 
+/* Sidebar header */
 .sidebar h2 {
   font-size: 1.5rem;
   margin-bottom: 30px;
-  padding-left: 10px; 
+  padding-left: 10px;
   color: #fff;
 }
 
+/* Sidebar list */
 .sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
+/* Sidebar items - box style */
 .sidebar ul li {
-  position: relative; /* Needed for ::after */
-  margin: 15px 0;
+  margin: 6px 0;
+  padding: 8px 14px;
+  font-size: 14px;
+  background-color: transparent;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  color: #fff;
   cursor: pointer;
-  color: #fff; /* White text */
-  padding: 8px 12px;
-  transition: color 0.2s ease;
+  transition: border 0.3s, background 0.3s;
 }
 
-.sidebar ul li::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 2px;
-  width: 0;
-  background: #fff; /* Purple underline */
-  transition: width 0.3s ease;
-}
-
-.sidebar ul li:hover::after {
-  width: 100%; /* Slide in underline */
-}
-
+/* Hover effect - white border */
 .sidebar ul li:hover {
-  color: #fff; /* Keep text white */
+  border: 0.5px solid #7450b4;
 }
 
+/* Active tab - purple border */
+.sidebar ul li.active {
+  border: 2px solid #a855f7; /* Tailwind-style purple-500 */
+}
+
+.gradient-text {
+  background:radial-gradient(
+    circle at 5% 15%,
+    #f7d7b1 0%,
+    #7450b4 10%,
+    #2f3267 40%,
+    #04040c 98%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text; /* For Firefox */
+  font-weight: bold;
+}
+
+
+/* Main content area */
 .main-content {
   padding: 70px 350px 40px 120px; /* top, right, bottom, left */
   color: #fff;

@@ -60,7 +60,7 @@ function DoctorDashboard() {
 
       {/* Sidebar */}
       <aside ref={sidebarRef} className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-        <h2 onClick={() => { setSection('welcome'); closeSidebar(); }} style={{ cursor: 'pointer' }}>
+        <h2 onClick={() => { setSection('welcome'); closeSidebar(); }} style={{ cursor: 'pointer' }} className="gradient-text">
           DoctorPortal
         </h2>
         <ul>

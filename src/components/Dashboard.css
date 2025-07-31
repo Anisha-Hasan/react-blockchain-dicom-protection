@@ -94,9 +94,11 @@ body, html {
 
 /* Sidebar items - box style */
 .sidebar ul li {
-  margin: 6px 0;
+  margin: 10px 0;
   padding: 8px 14px;
   font-size: 14px;
+  display: flex;
+  align-items: center;
   background-color: transparent;
   border: 2px solid transparent;
   border-radius: 8px;
@@ -114,6 +116,13 @@ body, html {
 .sidebar ul li.active {
   border: 2px solid #a855f7;
 }
+
+.sidebar .icon {
+  margin-right: 8px; 
+  vertical-align: middle;
+  font-size: 16px;
+}
+
 
 /* Logout button styling */
 .logout-button {

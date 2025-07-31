@@ -2,12 +2,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
 import crypto from 'crypto-js';
+import {
+  FaUpload,
+  FaClipboardList,
+  FaQuestionCircle,
+} from 'react-icons/fa';
+import { IoMdSettings } from 'react-icons/io';
+import { RiLogoutBoxLine } from "react-icons/ri";
 
 function StaffDashboard() {
   const [section, setSection] = useState('welcome');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const staffName = 'John Doe';
+  const sidebarRef = useRef(null);
 
   const [patientID, setPatientID] = useState('');
   const [patientName, setPatientName] = useState('');
@@ -16,9 +24,6 @@ function StaffDashboard() {
   const [ipfsLink, setIpfsLink] = useState('');
   const [status, setStatus] = useState('');
 
-  const sidebarRef = useRef(null);
-
-  // ✅ Dummy log data
   const uploadLog = [
     {
       id: 1,
@@ -118,47 +123,32 @@ function StaffDashboard() {
             setSection('welcome');
             closeSidebar();
           }}
-          style={{ cursor: 'pointer' }} className="gradient-text"
+          style={{ cursor: 'pointer' }}
+          className="gradient-text"
         >
           StaffPortal
         </h2>
-        <ul>
-          <li
-            onClick={() => {
-              setSection('profile');
-              closeSidebar();
-            }}
-          >
-            Settings
-          </li>
-          <li
-            onClick={() => {
-              setSection('upload');
-              closeSidebar();
-            }}
-          >
-            Upload DICOM
-          </li>
-          <li
-            onClick={() => {
-              setSection('log');
-              closeSidebar();
-            }}
-          >
-            Upload Log
-          </li>
-          <li
-            onClick={() => {
-              setSection('help');
-              closeSidebar();
-            }}
-          >
-            Help/About
-          </li>
-          <li onClick={() => alert('Logging out')} style={{ color: 'red' }}>
-            Logout
-          </li>
-        </ul>
+
+        <div className="nav-section">
+          <ul>
+            <li onClick={() => { setSection('profile'); closeSidebar(); }}>
+              <IoMdSettings className="icon" /> Settings
+            </li>
+            <li onClick={() => { setSection('upload'); closeSidebar(); }}>
+              <FaUpload className="icon" /> Upload DICOM
+            </li>
+            <li onClick={() => { setSection('log'); closeSidebar(); }}>
+              <FaClipboardList className="icon" /> Upload Log
+            </li>
+            <li onClick={() => { setSection('help'); closeSidebar(); }}>
+              <FaQuestionCircle className="icon" /> Help/About
+            </li>
+          </ul>
+        </div>
+
+        <div className="logout-button" onClick={() => alert('Logging out')} >
+          <RiLogoutBoxLine className="icon" /> Logout
+        </div>
       </aside>
 
       {/* Main Content */}
@@ -172,7 +162,9 @@ function StaffDashboard() {
           </div>
         )}
 
-        {section === 'profile' && <ProfileSettings name={staffName} uniqueId="ST001" role="Staff" />}
+        {section === 'profile' && (
+          <ProfileSettings name={staffName} uniqueId="ST001" role="Staff" />
+        )}
 
         {section === 'upload' && (
           <div>

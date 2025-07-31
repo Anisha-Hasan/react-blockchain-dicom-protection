@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
+import { FaFileMedical, FaRegImages, FaSignOutAlt, FaQuestionCircle} from 'react-icons/fa';
+import { IoMdSettings } from 'react-icons/io';
+import { LuLogs } from "react-icons/lu";
+import { RiLogoutBoxLine } from "react-icons/ri";
 
 function PatientDashboard() {
   const [section, setSection] = useState('welcome');
@@ -83,14 +87,31 @@ function PatientDashboard() {
         <h2 onClick={() => { setSection('welcome'); closeSidebar(); }} style={{ cursor: 'pointer' }} className="gradient-text">
           My Health
         </h2>
-        <ul>
-          <li className={navItemClass('profile')} onClick={() => { setSection('profile'); closeSidebar(); }}>Profile Settings</li>
-          <li className={navItemClass('requests')} onClick={() => { setSection('requests'); closeSidebar(); }}>Access Requests</li>
-          <li className={navItemClass('dicoms')} onClick={() => { setSection('dicoms'); closeSidebar(); }}>My DICOMs</li>
-          <li className={navItemClass('log')} onClick={() => { setSection('log'); closeSidebar(); }}>Access Log</li>
-          <li className={navItemClass('help')} onClick={() => { setSection('help'); closeSidebar(); }}>Help/About</li>
-          <li onClick={() => alert('Logging out')} style={{ color: 'red' }}>Logout</li>
+
+        <div className="nav-section">
+          <ul>
+          <li className={navItemClass('profile')} onClick={() => { setSection('profile'); closeSidebar(); }}>
+            <IoMdSettings className="icon" /> Profile Settings
+          </li>
+          <li className={navItemClass('requests')} onClick={() => { setSection('requests'); closeSidebar(); }}>
+            <FaFileMedical className="icon" /> Access Requests
+          </li>
+          <li className={navItemClass('dicoms')} onClick={() => { setSection('dicoms'); closeSidebar(); }}>
+            <FaRegImages className="icon" /> My DICOMs
+          </li>
+          <li className={navItemClass('log')} onClick={() => { setSection('log'); closeSidebar(); }}>
+            <LuLogs className="icon" /> Access Log
+          </li>
+          <li className={navItemClass('help')} onClick={() => { setSection('help'); closeSidebar(); }}>
+            <FaQuestionCircle className="icon" /> Help/About
+          </li>
         </ul>
+        </div>
+        
+
+        <div className="logout-button" onClick={() => alert('Logging out')}>
+            <RiLogoutBoxLine className="icon" /> Logout
+        </div>
       </aside>
 
       <main className="main-content">

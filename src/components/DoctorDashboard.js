@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
+import { FaFileMedical, FaQuestionCircle } from 'react-icons/fa';
+import { IoMdSettings } from 'react-icons/io';
+import { IoPeopleSharp } from "react-icons/io5";
+import { RiLogoutBoxLine } from "react-icons/ri";
+
 
 function DoctorDashboard() {
   const [section, setSection] = useState('welcome');
@@ -21,13 +26,8 @@ function DoctorDashboard() {
     { id: 'P003', name: 'John', permission: 'Declined' },
   ];
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  };
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const closeSidebar = () => setIsSidebarOpen(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -60,16 +60,37 @@ function DoctorDashboard() {
 
       {/* Sidebar */}
       <aside ref={sidebarRef} className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-        <h2 onClick={() => { setSection('welcome'); closeSidebar(); }} style={{ cursor: 'pointer' }} className="gradient-text">
+        <h2
+          onClick={() => {
+            setSection('welcome');
+            closeSidebar();
+          }}
+          style={{ cursor: 'pointer' }}
+          className="gradient-text"
+        >
           DoctorPortal
         </h2>
-        <ul>
-          <li onClick={() => { setSection('profile'); closeSidebar(); }}>Profile Settings</li>
-          <li onClick={() => { setSection('requests'); closeSidebar(); }}>My Requests</li>
-          <li onClick={() => { setSection('patients'); closeSidebar(); }}>My Patients</li>
-          <li onClick={() => { setSection('help'); closeSidebar(); }}>Help/About</li>
-          <li onClick={() => alert('Logging out')} style={{ color: 'red' }}>Logout</li>
+        <div classname="nav-section">
+          <ul>
+          <li onClick={() => { setSection('profile'); closeSidebar(); }}>
+            <IoMdSettings className="icon" /> Profile Settings
+          </li>
+          <li onClick={() => { setSection('requests'); closeSidebar(); }}>
+            <FaFileMedical className="icon" /> My Requests
+          </li>
+          <li onClick={() => { setSection('patients'); closeSidebar(); }}>
+            <IoPeopleSharp className="icon" /> My Patients
+          </li>
+          <li onClick={() => { setSection('help'); closeSidebar(); }}>
+            <FaQuestionCircle className="icon" /> Help/About
+          </li>
         </ul>
+        </div>
+        
+        <div className="logout-button" onClick={() => alert('Logging out')}>
+          <RiLogoutBoxLine className="icon" /> Logout
+        </div>
+  
       </aside>
 
       {/* Main Content */}

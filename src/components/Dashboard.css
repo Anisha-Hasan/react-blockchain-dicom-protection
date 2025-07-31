@@ -45,10 +45,21 @@ body, html {
   transition: left 0.3s ease;
   z-index: 1000;
   border-radius: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .sidebar.open {
   left: 0;
+}
+
+/* Wrapper to group items above logout */
+.sidebar-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Sidebar header */
@@ -59,11 +70,26 @@ body, html {
   color: #fff;
 }
 
+/* Gradient text */
+.sidebar h2.gradient-text {
+  background: radial-gradient(
+    circle at 5% 15%,
+    #7450b4 0%,
+    #2f3267 40%,
+    #04040c 98%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: bold;
+}
+
 /* Sidebar list */
 .sidebar ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  flex-grow: 1;
 }
 
 /* Sidebar items - box style */
@@ -86,26 +112,36 @@ body, html {
 
 /* Active tab - purple border */
 .sidebar ul li.active {
-  border: 2px solid #a855f7; /* Tailwind-style purple-500 */
+  border: 2px solid #a855f7;
 }
 
-.gradient-text {
-  background:radial-gradient(
+/* Logout button styling */
+.logout-button {
+  padding: 10px 14px;
+  background-color: transparent;
+  border: 1px solid grey;
+  color: #fff;
+  border-radius: 8px;
+  background: radial-gradient(
     circle at 5% 15%,
-    #f7d7b1 0%,
-    #7450b4 10%,
+    #7450b4 0%,
     #2f3267 40%,
     #04040c 98%
   );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text; /* For Firefox */
-  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: auto;
 }
 
 
+.logout-button:hover {
+  border: 1px solid #d3b9eb;
+  box-shadow: 0 0 8px #d3b9eb;
+}
+
 /* Main content area */
 .main-content {
-  padding: 70px 350px 40px 120px; /* top, right, bottom, left */
+  padding: 70px 350px 40px 120px;
   color: #fff;
 }

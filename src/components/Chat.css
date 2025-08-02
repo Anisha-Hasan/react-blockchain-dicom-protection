@@ -1,0 +1,97 @@
+.chat-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: radial-gradient(
+    circle at 5% 15%,
+    #7450b4 0%,
+    #2f3267 40%,
+    #04040c 98%
+  );
+  color: white;
+  border: 0.5px solid grey;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: none;       /* Remove the shadow to eliminate the grey halo */
+  outline: none;
+}
+
+.chat-icon:hover {
+  border: 1px solid #d3b9eb;
+  box-shadow: 0 0 8px #d3b9eb;
+}
+
+.chat-icon:focus,
+.chat-icon:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.chat-box {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  width: 35vw;
+  height: 75vh;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.chat-header {
+  background: #6a0dad;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-body {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.chat-input {
+  display: flex;
+  border-top: 1px solid #ccc;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+}
+
+.chat-input button {
+  background: #6a0dad;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+/* Slide in animation */
+@keyframes slideIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

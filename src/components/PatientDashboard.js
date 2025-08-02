@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
-import { FaFileMedical, FaRegImages, FaSignOutAlt, FaQuestionCircle} from 'react-icons/fa';
+import Chat from './Chat';
+import { FaFileMedical, FaRegImages, FaQuestionCircle } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
 import { LuLogs } from "react-icons/lu";
 import { RiLogoutBoxLine } from "react-icons/ri";
@@ -90,27 +91,26 @@ function PatientDashboard() {
 
         <div className="nav-section">
           <ul>
-          <li className={navItemClass('profile')} onClick={() => { setSection('profile'); closeSidebar(); }}>
-            <IoMdSettings className="icon" /> Profile Settings
-          </li>
-          <li className={navItemClass('requests')} onClick={() => { setSection('requests'); closeSidebar(); }}>
-            <FaFileMedical className="icon" /> Access Requests
-          </li>
-          <li className={navItemClass('dicoms')} onClick={() => { setSection('dicoms'); closeSidebar(); }}>
-            <FaRegImages className="icon" /> My DICOMs
-          </li>
-          <li className={navItemClass('log')} onClick={() => { setSection('log'); closeSidebar(); }}>
-            <LuLogs className="icon" /> Access Log
-          </li>
-          <li className={navItemClass('help')} onClick={() => { setSection('help'); closeSidebar(); }}>
-            <FaQuestionCircle className="icon" /> Help/About
-          </li>
-        </ul>
+            <li className={navItemClass('profile')} onClick={() => { setSection('profile'); closeSidebar(); }}>
+              <IoMdSettings className="icon" /> Profile Settings
+            </li>
+            <li className={navItemClass('requests')} onClick={() => { setSection('requests'); closeSidebar(); }}>
+              <FaFileMedical className="icon" /> Access Requests
+            </li>
+            <li className={navItemClass('dicoms')} onClick={() => { setSection('dicoms'); closeSidebar(); }}>
+              <FaRegImages className="icon" /> My DICOMs
+            </li>
+            <li className={navItemClass('log')} onClick={() => { setSection('log'); closeSidebar(); }}>
+              <LuLogs className="icon" /> Access Log
+            </li>
+            <li className={navItemClass('help')} onClick={() => { setSection('help'); closeSidebar(); }}>
+              <FaQuestionCircle className="icon" /> Help/About
+            </li>
+          </ul>
         </div>
-        
 
         <div className="logout-button" onClick={() => alert('Logging out')}>
-            <RiLogoutBoxLine className="icon" /> Logout
+          <RiLogoutBoxLine className="icon" /> Logout
         </div>
       </aside>
 
@@ -162,6 +162,9 @@ function PatientDashboard() {
                 </tbody>
               </table>
             )}
+
+            {/* Show Chat button ONLY in Access Requests section */}
+            <Chat role="patient" />
           </div>
         )}
 

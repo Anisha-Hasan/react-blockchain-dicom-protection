@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
+import Chat from './Chat';
 import { FaFileMedical, FaQuestionCircle } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
 import { IoPeopleSharp } from "react-icons/io5";
 import { RiLogoutBoxLine } from "react-icons/ri";
 
-
 function DoctorDashboard() {
   const [section, setSection] = useState('welcome');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   const sidebarRef = useRef(null);
   const doctorName = 'Dr. Smith';
 
@@ -60,37 +59,28 @@ function DoctorDashboard() {
 
       {/* Sidebar */}
       <aside ref={sidebarRef} className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-        <h2
-          onClick={() => {
-            setSection('welcome');
-            closeSidebar();
-          }}
-          style={{ cursor: 'pointer' }}
-          className="gradient-text"
-        >
+        <h2 onClick={() => { setSection('welcome'); closeSidebar(); }} style={{ cursor: 'pointer' }} className="gradient-text">
           DoctorPortal
         </h2>
-        <div classname="nav-section">
+        <div className="nav-section">
           <ul>
-          <li onClick={() => { setSection('profile'); closeSidebar(); }}>
-            <IoMdSettings className="icon" /> Profile Settings
-          </li>
-          <li onClick={() => { setSection('requests'); closeSidebar(); }}>
-            <FaFileMedical className="icon" /> My Requests
-          </li>
-          <li onClick={() => { setSection('patients'); closeSidebar(); }}>
-            <IoPeopleSharp className="icon" /> My Patients
-          </li>
-          <li onClick={() => { setSection('help'); closeSidebar(); }}>
-            <FaQuestionCircle className="icon" /> Help/About
-          </li>
-        </ul>
+            <li onClick={() => { setSection('profile'); closeSidebar(); }}>
+              <IoMdSettings className="icon" /> Profile Settings
+            </li>
+            <li onClick={() => { setSection('requests'); closeSidebar(); }}>
+              <FaFileMedical className="icon" /> My Requests
+            </li>
+            <li onClick={() => { setSection('patients'); closeSidebar(); }}>
+              <IoPeopleSharp className="icon" /> My Patients
+            </li>
+            <li onClick={() => { setSection('help'); closeSidebar(); }}>
+              <FaQuestionCircle className="icon" /> Help/About
+            </li>
+          </ul>
         </div>
-        
         <div className="logout-button" onClick={() => alert('Logging out')}>
           <RiLogoutBoxLine className="icon" /> Logout
         </div>
-  
       </aside>
 
       {/* Main Content */}
@@ -130,9 +120,7 @@ function DoctorDashboard() {
                       <td>{req.reason}</td>
                       <td>{req.date}</td>
                       <td>
-                        <span className={`badge ${req.status.toLowerCase()}`}>
-                          {req.status}
-                        </span>
+                        <span className={`badge ${req.status.toLowerCase()}`}>{req.status}</span>
                       </td>
                       <td>
                         {req.status === 'Pending' && (
@@ -168,15 +156,12 @@ function DoctorDashboard() {
                       <td>{p.id}</td>
                       <td>{p.name}</td>
                       <td>
-                        <span className={`badge ${p.permission.toLowerCase()}`}>
-                          {p.permission}
-                        </span>
+                        <span className={`badge ${p.permission.toLowerCase()}`}>{p.permission}</span>
                       </td>
                       <td>
-                        {p.permission === 'Granted' && (
+                        {p.permission === 'Granted' ? (
                           <button className="btn btn-primary btn-sm">View DICOMs</button>
-                        )}
-                        {p.permission !== 'Granted' && (
+                        ) : (
                           <button className="btn btn-secondary btn-sm">Request Access</button>
                         )}
                       </td>
@@ -197,6 +182,9 @@ function DoctorDashboard() {
           </div>
         )}
       </main>
+
+      {/* Floating Chat Component */}
+      <Chat role="doctor" />
     </div>
   );
 }

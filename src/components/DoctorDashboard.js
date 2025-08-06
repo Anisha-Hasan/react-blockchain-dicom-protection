@@ -183,8 +183,9 @@ function DoctorDashboard() {
         )}
       </main>
 
-      {/* Floating Chat Component */}
-      <Chat role="doctor" />
+      {/* Floating Chat Component: Only on Requests & Patients */}
+      {(section === 'requests' || section === 'patients') && <Chat role="doctor" />}
+      
     </div>
   );
 }

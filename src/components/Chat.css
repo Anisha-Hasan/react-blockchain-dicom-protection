@@ -5,7 +5,7 @@
   background: radial-gradient(
     circle at 5% 15%,
     #7450b4 0%,
-    #2f3267 40%,
+    #2f3267 60%,
     #04040c 98%
   );
   color: white;
@@ -18,7 +18,7 @@
   justify-content: center;
   cursor: pointer;
   z-index: 1000;
-  box-shadow: none;       /* Remove the shadow to eliminate the grey halo */
+  box-shadow: none;
   outline: none;
 }
 
@@ -35,7 +35,7 @@
 
 .chat-box {
   position: fixed;
-  bottom: 70px;
+  bottom: 90px;
   right: 20px;
   width: 35vw;
   height: 75vh;
@@ -50,8 +50,14 @@
 }
 
 .chat-header {
-  background: #6a0dad;
+  background: radial-gradient(
+    circle at 5% 15%,
+    #7450b4 0%,
+    #2f3267 60%,
+    #04040c 98%
+  );
   color: white;
+  border: 0.5px solid grey;
   padding: 10px;
   font-weight: bold;
   display: flex;
@@ -64,6 +70,20 @@
   padding: 10px;
   overflow-y: auto;
   font-size: 14px;
+}
+
+/* 👇 New: Style for user list items */
+.chat-user-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  color: #333;
+  background-color: #f8f8f8;
+  transition: background 0.2s;
+}
+
+.chat-user-item:hover {
+  background-color: #e0d6f8;
 }
 
 .chat-input {
@@ -94,4 +114,43 @@
   to {
     transform: translateY(0);
   }
+}
+
+.chat-user-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  color: #000; /* or #333 if you prefer */
+  background-color: #f5f5f5; /* subtle light gray */
+  transition: background 0.2s ease;
+}
+
+.chat-user-item:hover {
+  background-color: #e0e0e0;
+}
+
+.chat-message-header {
+  color: black;
+  padding: 12px;
+  font-size: 14px;
+  font-style: italic;
+  background-color: white
+  
+}
+
+.chat-close-btn {
+  cursor: pointer;
+  user-select: none;
+  font-size: 18px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.empty-chat {
+    color: #000; /* or #1a1a1a or any dark color */
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }

@@ -164,7 +164,7 @@ function PatientDashboard() {
             )}
 
             {/* Show Chat button ONLY in Access Requests section */}
-            <Chat role="patient" />
+            <Chat userRole="patient" userId="patient123" />
           </div>
         )}
 

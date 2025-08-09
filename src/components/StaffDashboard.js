@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
+import './UploadDicom.css';
 import crypto from 'crypto-js';
 import { FaUpload, FaClipboardList, FaQuestionCircle } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
@@ -124,72 +125,72 @@ function StaffDashboard() {
         )}
 
         {section === 'upload' && (
-          <div>
-            <h2>Upload DICOM</h2>
+          <div className="upload-dicom-container">
+            <div className="upload-card">
+              <h1>Upload DICOM</h1>
 
-            <div className="input-row">
-              <div className="mb-3 input-half">
-                <label>Patient ID</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={patientID}
-                  onChange={(e) => setPatientID(e.target.value)}
-                  placeholder="Enter Patient ID"
-                />
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Patient ID</label>
+                  <input
+                    type="text"
+                    value={patientID}
+                    onChange={(e) => setPatientID(e.target.value)}
+                    placeholder="Enter Patient ID"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Patient Name</label>
+                  <input
+                    type="text"
+                    value={patientName}
+                    onChange={(e) => setPatientName(e.target.value)}
+                    placeholder="Enter Patient Name"
+                  />
+                </div>
               </div>
 
-              <div className="mb-3 input-half">
-                <label>Patient Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={patientName}
-                  onChange={(e) => setPatientName(e.target.value)}
-                  placeholder="Enter Patient Name"
-                />
-              </div>
-            </div>
-
-            <div className="mb-3">
-              <label>Choose DICOM File (.dcm only)</label>
-              <div className="custom-file-wrapper">
+              <div className="form-group">
+                <label>Choose DICOM File (.dcm only)</label>
                 <input
                   type="file"
-                  className="custom-file-input"
                   accept=".dcm"
                   onChange={handleFileChange}
                 />
               </div>
+
+              <div className="button-row">
+                <button className="upload-btn" onClick={handleUpload}>
+                  Upload
+                </button>
+              </div>
+
+              {fileHash && (
+                <div className="mt-3">
+                  <strong>File Hash (SHA-256):</strong>
+                  <p>{fileHash}</p>
+                </div>
+              )}
+
+              {ipfsLink && (
+                <div className="mt-2">
+                  <strong>IPFS Link:</strong>
+                  <a href={ipfsLink} target="_blank" rel="noreferrer">
+                    {ipfsLink}
+                  </a>
+                </div>
+              )}
+
+              {status && (
+                <div className="mt-2">
+                  <p>{status}</p>
+                </div>
+              )}
             </div>
-
-            <button className="upload-btn" onClick={handleUpload}>
-              Upload
-            </button>
-
-            {fileHash && (
-              <div className="mt-3">
-                <strong>File Hash (SHA-256):</strong>
-                <p>{fileHash}</p>
-              </div>
-            )}
-
-            {ipfsLink && (
-              <div className="mt-2">
-                <strong>IPFS Link:</strong>
-                <a href={ipfsLink} target="_blank" rel="noreferrer">
-                  {ipfsLink}
-                </a>
-              </div>
-            )}
-
-            {status && (
-              <div className="mt-2">
-                <p>{status}</p>
-              </div>
-            )}
           </div>
         )}
+
 
         {section === 'log' && (
           <div>

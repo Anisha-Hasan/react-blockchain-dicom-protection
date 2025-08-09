@@ -57,18 +57,30 @@ input[type="file"]:focus {
 }
 
 .upload-btn {
-  display: inline-block;
-  background: linear-gradient(135deg, #8a2be2, #6a1bb9);
-  color: white;
-  font-size: 1rem;
-  padding: 10px 24px;
+  padding: 10px 14px;
+  color: #fff;
+  background: radial-gradient(
+    circle at 5% 15%,
+    #7450b4 0%,
+    #2f3267 40%,
+    #04040c 98%
+  );
   border-radius: 8px;
-  border: none;
+  border: 1px solid grey;
+  margin-top: 20px;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.3s ease;
+  transition: all 0.1s ease;
 }
 
-.upload-btn:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(135deg, #9b30ff, #7a1fd0);
+.button-row {
+  display: flex;
+  justify-content: flex-end; /* Pushes button to right */
+  margin-top: 20px; /* Space from the file input */
 }
+
+
+.upload-btn:hover {
+  border: 1px solid #d3b9eb;
+  box-shadow: 0 0 8px #d3b9eb;
+}
+

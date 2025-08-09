@@ -1,21 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+/* Instead of the word "Admin", "Staff" is used in the code */
+import React, { useState } from 'react';
 import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
 import crypto from 'crypto-js';
-import {
-  FaUpload,
-  FaClipboardList,
-  FaQuestionCircle,
-} from 'react-icons/fa';
+import { FaUpload, FaClipboardList, FaQuestionCircle } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
 import { RiLogoutBoxLine } from "react-icons/ri";
 
 function StaffDashboard() {
   const [section, setSection] = useState('welcome');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const staffName = 'John Doe';
-  const sidebarRef = useRef(null);
 
   const [patientID, setPatientID] = useState('');
   const [patientName, setPatientName] = useState('');
@@ -79,74 +74,36 @@ function StaffDashboard() {
     }
   };
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        sidebarRef.current &&
-        !sidebarRef.current.contains(event.target) &&
-        !event.target.classList.contains('hamburger')
-      ) {
-        closeSidebar();
-      }
-    };
-
-    if (isSidebarOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isSidebarOpen]);
-
   return (
-    <div className={`dashboard-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
-      {/* Hamburger */}
-      <div className="hamburger" onClick={toggleSidebar}>
-        &#9776;
-      </div>
-
-      {/* Sidebar */}
-      <aside ref={sidebarRef} className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
+    <div className="dashboard-container">
+      {/* Sidebar - Always Visible */}
+      <aside className="sidebar open">
         <h2
-          onClick={() => {
-            setSection('welcome');
-            closeSidebar();
-          }}
+          onClick={() => setSection('welcome')}
           style={{ cursor: 'pointer' }}
           className="gradient-text"
         >
-          StaffPortal
+          Hi Admin
         </h2>
 
         <div className="nav-section">
           <ul>
-            <li onClick={() => { setSection('profile'); closeSidebar(); }}>
+            <li onClick={() => setSection('profile')}>
               <IoMdSettings className="icon" /> Settings
             </li>
-            <li onClick={() => { setSection('upload'); closeSidebar(); }}>
+            <li onClick={() => setSection('upload')}>
               <FaUpload className="icon" /> Upload DICOM
             </li>
-            <li onClick={() => { setSection('log'); closeSidebar(); }}>
+            <li onClick={() => setSection('log')}>
               <FaClipboardList className="icon" /> Upload Log
             </li>
-            <li onClick={() => { setSection('help'); closeSidebar(); }}>
+            <li onClick={() => setSection('help')}>
               <FaQuestionCircle className="icon" /> Help/About
             </li>
           </ul>
         </div>
 
-        <div className="logout-button" onClick={() => alert('Logging out')} >
+        <div className="logout-button" onClick={() => alert('Logging out')}>
           <RiLogoutBoxLine className="icon" /> Logout
         </div>
       </aside>
@@ -169,39 +126,44 @@ function StaffDashboard() {
         {section === 'upload' && (
           <div>
             <h2>Upload DICOM</h2>
-            <div className="mb-3">
-              <label>Patient ID</label>
-              <input
-                type="text"
-                className="form-control"
-                value={patientID}
-                onChange={(e) => setPatientID(e.target.value)}
-                placeholder="Enter Patient ID"
-              />
-            </div>
 
-            <div className="mb-3">
-              <label>Patient Name</label>
-              <input
-                type="text"
-                className="form-control"
-                value={patientName}
-                onChange={(e) => setPatientName(e.target.value)}
-                placeholder="Enter Patient Name"
-              />
+            <div className="input-row">
+              <div className="mb-3 input-half">
+                <label>Patient ID</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={patientID}
+                  onChange={(e) => setPatientID(e.target.value)}
+                  placeholder="Enter Patient ID"
+                />
+              </div>
+
+              <div className="mb-3 input-half">
+                <label>Patient Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={patientName}
+                  onChange={(e) => setPatientName(e.target.value)}
+                  placeholder="Enter Patient Name"
+                />
+              </div>
             </div>
 
             <div className="mb-3">
               <label>Choose DICOM File (.dcm only)</label>
-              <input
-                type="file"
-                className="form-control"
-                accept=".dcm"
-                onChange={handleFileChange}
-              />
+              <div className="custom-file-wrapper">
+                <input
+                  type="file"
+                  className="custom-file-input"
+                  accept=".dcm"
+                  onChange={handleFileChange}
+                />
+              </div>
             </div>
 
-            <button className="btn btn-primary" onClick={handleUpload}>
+            <button className="upload-btn" onClick={handleUpload}>
               Upload
             </button>
 

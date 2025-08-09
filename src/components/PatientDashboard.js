@@ -9,7 +9,7 @@ import { RiLogoutBoxLine } from "react-icons/ri";
 
 function PatientDashboard() {
   const [section, setSection] = useState('welcome');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // default open for desktop
   const sidebarRef = useRef(null);
   const patientName = 'Mark';
 
@@ -114,7 +114,8 @@ function PatientDashboard() {
         </div>
       </aside>
 
-      <main className="main-content">
+      {/* Shifted main content */}
+      <main className={`main-content ${isSidebarOpen ? 'shifted' : ''}`}>
         {section === 'welcome' && (
           <div>
             <h2>Welcome back, <span className="highlight">{patientName}!</span></h2>
@@ -162,8 +163,6 @@ function PatientDashboard() {
                 </tbody>
               </table>
             )}
-
-            {/* Show Chat button ONLY in Access Requests section */}
             <Chat userRole="patient" userId="patient123" />
           </div>
         )}

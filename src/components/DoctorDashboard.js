@@ -59,7 +59,11 @@ function DoctorDashboard() {
 
       {/* Sidebar */}
       <aside ref={sidebarRef} className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-        <h2 onClick={() => { setSection('welcome'); closeSidebar(); }} style={{ cursor: 'pointer' }} className="gradient-text">
+        <h2
+          onClick={() => { setSection('welcome'); closeSidebar(); }}
+          style={{ cursor: 'pointer' }}
+          className="gradient-text"
+        >
           DoctorPortal
         </h2>
         <div className="nav-section">
@@ -84,7 +88,7 @@ function DoctorDashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="main-content">
+      <main className={`main-content ${isSidebarOpen ? 'shifted' : ''}`}>
         {section === 'welcome' && (
           <div>
             <h2>Welcome <span className="highlight">{doctorName}!</span></h2>
@@ -185,7 +189,6 @@ function DoctorDashboard() {
 
       {/* Floating Chat Component: Only on Requests & Patients */}
       {(section === 'requests' || section === 'patients') && <Chat role="doctor" />}
-      
     </div>
   );
 }

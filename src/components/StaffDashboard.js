@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
 import './UploadDicom.css';
+import './Logs.css';
 import crypto from 'crypto-js';
 import { FaUpload, FaClipboardList, FaQuestionCircle } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
@@ -157,8 +158,12 @@ function StaffDashboard() {
                   type="file"
                   accept=".dcm"
                   onChange={handleFileChange}
+                  className="dicom-file-input"
                 />
               </div>
+
+
+
 
               <div className="button-row">
                 <button className="upload-btn" onClick={handleUpload}>
@@ -195,7 +200,33 @@ function StaffDashboard() {
         {section === 'log' && (
           <div>
             <h2>Upload Log</h2>
-            <table className="table">
+
+            {/* Stats Section */}
+            <div className="dicom-stats">
+              <div className="dicom-stat-card">
+                <h3>No. of DICOM Uploaded This Week</h3>
+                <p className="stat-value">12</p> {/* Dummy Value */}
+              </div>
+              <div className="dicom-stat-card">
+                <h3>No. of DICOM Uploaded Today</h3>
+                <p className="stat-value">3</p> {/* Dummy Value */}
+                <button
+                  className="dicom-stat-button"
+                  onClick={() => {
+                    const todayRow = document.getElementById("today-table");
+                    if (todayRow) {
+                      todayRow.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                >
+                  View Today’s Uploads
+                </button>
+              </div>
+            </div>
+
+            {/* Today's Upload History */}
+            <h4 id="today-table">Today's Upload History</h4>
+            <table className="dicom-table">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -229,6 +260,7 @@ function StaffDashboard() {
             </table>
           </div>
         )}
+
 
         {section === 'help' && (
           <div>

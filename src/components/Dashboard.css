@@ -122,7 +122,6 @@ body, html {
   box-shadow: 0 0 8px #d3b9eb;
 }
 
-/* Main content area - shifted to right */
 .main-content {
   margin-left: 250px; /* same as sidebar width */
   padding: 40px;
@@ -130,3 +129,109 @@ body, html {
   flex: 1;
 }
 
+/*Profile settings*/
+
+.profile-settings-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px;
+  background: #1f1f1f; /* subtle dark background */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.name-section {
+  flex: 1;
+}
+
+.staff-name {
+  color: #a855f7; /* purple */
+  cursor: pointer;
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.staff-name:hover {
+  color: #9333ea;
+}
+
+.name-input {
+  font-size: 1.4rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #666;
+  background-color: #2a2a2a;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.name-input:focus {
+  border-color: #a855f7;
+  background-color: #1e1e1e;
+}
+
+.role-text {
+  color: #bbb;
+  font-size: 0.95rem;
+}
+
+.profile-image-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #2a2a2a; /* fallback background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #a855f7;
+}
+
+.profile-image:hover {
+  transform: scale(1.05);
+  border-color: #9333ea;
+}
+
+.no-image-text {
+  color: #bbb;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 10px;
+}
+
+.camera-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: #a855f7;
+  color: white;
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.camera-btn:hover {
+  background: #9333ea;
+  transform: scale(1.1);
+}
+
+input[type="file"] {
+  display: none;
+}

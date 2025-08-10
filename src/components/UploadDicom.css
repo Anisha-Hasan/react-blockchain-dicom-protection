@@ -78,6 +78,10 @@ input[type="file"]:focus {
   margin-top: 20px; /* Space from the file input */
 }
 
+.dicom-file-input {
+  display: block !important;
+}
+
 
 .upload-btn:hover {
   border: 1px solid #d3b9eb;

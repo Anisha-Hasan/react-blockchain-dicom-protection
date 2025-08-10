@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './Dashboard.css';
+import { MdEdit } from "react-icons/md";
 
 function ProfileSettings({ name, uniqueId, role = 'Patient' }) {
   const [fullName, setFullName] = useState(name);
@@ -8,102 +9,152 @@ function ProfileSettings({ name, uniqueId, role = 'Patient' }) {
   const [newPassword, setNewPassword] = useState('');
   const [emailNotifications, setEmailNotifications] = useState(false);
 
+  const fileInputRef = useRef(null);
+
+  // Trigger hidden file input when icon is clicked
+  const handleEditPhotoClick = () => {
+    fileInputRef.current.click();
+  };
+
+  // Handle selected file
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      if (!validTypes.includes(file.type)) {
+        alert('Please select a valid image file (JPEG or PNG).');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePhoto(reader.result); // Preview the image
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
-    <div>
-      <h2>Profile Settings</h2>
+    <div className="profile-settings-wrapper">
+      {/* Profile Header */}
+      <div className="profile-settings-container">
+        {/* Name Section */}
+        <div className="name-section">
+          <h2
+            className="staff-name"
+            onClick={() => {
+              const newName = prompt('Enter your name:', fullName);
+              if (newName) setFullName(newName);
+            }}
+          >
+            {fullName}
+          </h2>
+          <p className="role-text">{role} ID: {uniqueId}</p>
+        </div>
 
-      {/* 1️⃣ Upload / Preview Profile Photo */}
-      <section>
-        <h4>Profile Photo</h4>
-        {profilePhoto && <img src={profilePhoto} alt="Profile" style={{ width: '100px', borderRadius: '50%' }} />}
-        <input
-          type="text"
-          placeholder="Image URL"
-          value={profilePhoto}
-          onChange={(e) => setProfilePhoto(e.target.value)}
-        />
-        <p style={{ fontSize: '0.9rem' }}>Tip: Use an avatar/cartoon link if you prefer not to upload a real photo.</p>
-      </section>
+        {/* Profile Image */}
+        <div className="profile-image-container">
+          {profilePhoto ? (
+            <img src={profilePhoto} alt="Profile" className="profile-image" />
+          ) : (
+            <div className="no-image-placeholder">No Image</div>
+          )}
 
-      {/* 2️⃣ Basic Info */}
-      <section>
-        <h4>Basic Info</h4>
-        <label>Full Name:</label><br />
-        <input
-          type="text"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-        /><br />
-
-        <label>{role} ID:</label><br />
-        <input type="text" value={uniqueId} readOnly /><br />
-
-        <label>Date of Birth:</label><br />
-        <input type="date" /><br />
-
-        <label>Contact Number:</label><br />
-        <input
-          type="text"
-          value={contact}
-          onChange={(e) => setContact(e.target.value)}
-        /><br />
-      </section>
-
-      {/* 3️⃣ Security */}
-      <section>
-        <h4>Security</h4>
-        <label>New Password:</label><br />
-        <input
-          type="password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-        /><br />
-
-        <label>
-          <input type="checkbox" disabled /> Enable Two-Factor Authentication (Coming Soon)
-        </label>
-      </section>
-
-      {/* 4️⃣ Communication Preferences */}
-      <section>
-        <h4>Communication Preferences</h4>
-        <label>
+          {/* Hidden File Input */}
           <input
-            type="checkbox"
-            checked={emailNotifications}
-            onChange={(e) => setEmailNotifications(e.target.checked)}
-          /> Receive email/text notifications
-        </label>
-      </section>
+            type="file"
+            accept="image/jpeg, image/png"
+            ref={fileInputRef}
+            className="hidden-file-input"
+            onChange={handleFileChange}
+          />
 
-      {/* 5️⃣ Delete / Deactivate */}
-      <section>
-        <h4>Account</h4>
-        <button style={{ background: 'red', color: '#fff', border: 'none', padding: '5px 10px' }}>
-          Request Account Deletion
-        </button>
-      </section>
+          {/* Edit Icon Overlay */}
+          <div className="edit-icon" onClick={handleEditPhotoClick}>
+            <MdEdit size={18} />
+          </div>
+        </div>
+      </div>
 
-      {/* 6️⃣ Save & Cancel */}
-      <section style={{ marginTop: '20px' }}>
-        <button
-          onClick={() => alert('Profile saved!')}
-          style={{ marginRight: '10px' }}
-        >
-          Save Changes
-        </button>
-        <button
-          onClick={() => {
-            setFullName(name);
-            setContact('');
-            setProfilePhoto('');
-            setNewPassword('');
-            setEmailNotifications(false);
-          }}
-        >
-          Cancel
-        </button>
-      </section>
+      {/* Profile Form */}
+      <div className="profile-form">
+        {/* Basic Info */}
+        <section>
+          <label>Full Name:</label><br />
+          <input
+            type="text"
+            className="name-input"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+          /><br />
+
+          <label>Date of Birth:</label><br />
+          <input type="date" /><br />
+
+          <label>Contact Number:</label><br />
+          <input
+            type="text"
+            value={contact}
+            onChange={(e) => setContact(e.target.value)}
+          /><br />
+        </section>
+
+        {/* Security */}
+        <section>
+          <h4>Security</h4>
+          <label>New Password:</label><br />
+          <input
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          /><br />
+
+          <label>
+            <input type="checkbox" disabled /> Enable Two-Factor Authentication (Coming Soon)
+          </label>
+        </section>
+
+        {/* Communication Preferences */}
+        <section>
+          <h4>Communication Preferences</h4>
+          <label>
+            <input
+              type="checkbox"
+              checked={emailNotifications}
+              onChange={(e) => setEmailNotifications(e.target.checked)}
+            /> Receive email/text notifications
+          </label>
+        </section>
+
+        {/* Delete Account */}
+        <section>
+          <h4>Account</h4>
+          <button className="delete-account-btn">
+            Request Account Deletion
+          </button>
+        </section>
+
+        {/* Save / Cancel */}
+        <section className="action-buttons">
+          <button
+            className="save-btn"
+            onClick={() => alert('Profile saved!')}
+          >
+            Save Changes
+          </button>
+          <button
+            className="cancel-btn"
+            onClick={() => {
+              setFullName(name);
+              setContact('');
+              setProfilePhoto('');
+              setNewPassword('');
+              setEmailNotifications(false);
+            }}
+          >
+            Cancel
+          </button>
+        </section>
+      </div>
     </div>
   );
 }

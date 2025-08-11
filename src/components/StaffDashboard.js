@@ -8,6 +8,7 @@ import crypto from 'crypto-js';
 import { FaUpload, FaClipboardList, FaQuestionCircle } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
 import { RiLogoutBoxLine } from "react-icons/ri";
+import { LuRefreshCw } from "react-icons/lu";
 
 function StaffDashboard() {
   const [section, setSection] = useState('welcome');
@@ -21,6 +22,7 @@ function StaffDashboard() {
   const [ipfsLink, setIpfsLink] = useState('');
   const [status, setStatus] = useState('');
 
+  // Dummy Upload Log
   const uploadLog = [
     {
       id: 1,
@@ -76,9 +78,31 @@ function StaffDashboard() {
     }
   };
 
+  // Dummy Gas Fee Data
+  const [gasPrice, setGasPrice] = useState("25 Gwei");
+  const [gasCost, setGasCost] = useState("0.002 ETH (~$3.50)");
+  const [gasStatus, setGasStatus] = useState("Normal");
+  const [lastUpdated, setLastUpdated] = useState("2025-08-10 14:00");
+
+  const refreshGasFee = () => {
+    // Just updating with new dummy values
+    setGasPrice("28 Gwei");
+    setGasCost("0.0022 ETH (~$3.80)");
+    setGasStatus("Slightly High");
+    setLastUpdated(new Date().toLocaleString());
+  };
+
+  // Function to determine class based on gas status instead of Gwei value
+  const getGasStatusClass = () => {
+    const statusLower = gasStatus.toLowerCase();
+    if (statusLower.includes("low")) return "low-fee";
+    if (statusLower.includes("high")) return "high-fee";
+    return "medium-fee"; // for normal
+  };
+
   return (
     <div className="dashboard-container">
-      {/* Sidebar - Always Visible */}
+      {/* Sidebar */}
       <aside className="sidebar open">
         <h2
           onClick={() => setSection('welcome')}
@@ -162,9 +186,6 @@ function StaffDashboard() {
                 />
               </div>
 
-
-
-
               <div className="button-row">
                 <button className="upload-btn" onClick={handleUpload}>
                   Upload
@@ -196,7 +217,6 @@ function StaffDashboard() {
           </div>
         )}
 
-
         {section === 'log' && (
           <div>
             <h2>Upload Log</h2>
@@ -205,11 +225,34 @@ function StaffDashboard() {
             <div className="dicom-stats">
               <div className="dicom-stat-card">
                 <h3>No. of DICOM Uploaded This Week</h3>
-                <p className="stat-value">12</p> {/* Dummy Value */}
+                <p className="stat-value">12</p>
+
+                {/* NEW - Gas Fee Section */}
+                <div className="gas-fee-mini">
+                  <strong>Gas Used:</strong> 0.015 ETH (~$25.00)
+                </div>
+
+                <button
+                  className="dicom-stat-button"
+                  onClick={() => {
+                    const todayRow = document.getElementById("today-table");
+                    if (todayRow) {
+                      todayRow.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                >
+                  View This Week’s Uploads
+                </button>
               </div>
               <div className="dicom-stat-card">
                 <h3>No. of DICOM Uploaded Today</h3>
-                <p className="stat-value">3</p> {/* Dummy Value */}
+                <p className="stat-value">3</p>
+
+                {/* NEW - Gas Fee Section */}
+                <div className="gas-fee-mini">
+                  <strong>Gas Used:</strong> 0.004 ETH (~$6.70)
+                </div>
+
                 <button
                   className="dicom-stat-button"
                   onClick={() => {
@@ -221,6 +264,28 @@ function StaffDashboard() {
                 >
                   View Today’s Uploads
                 </button>
+              </div>
+            </div>
+
+            {/* Gas Fee Tracker Card */}
+            <div className="gas-fee-container">
+              <div className="card gas-fee-card">
+                <div className="gas-fee-header">
+                  <h3>Gas Fee Tracker</h3>
+                  <button className="refresh-btn" onClick={refreshGasFee}>
+                    <LuRefreshCw size={18} />
+                  </button>
+                </div>
+
+                <div className="gas-fee-main">
+                  <span className="gas-price">{gasPrice}</span>
+                  <span className="gas-cost">{gasCost}</span>
+                </div>
+
+                <div className={`gas-status ${getGasStatusClass()}`}>
+                  Status: {gasStatus}
+                </div>
+                <div className="gas-updated">Updated: {lastUpdated}</div>
               </div>
             </div>
 
@@ -260,7 +325,6 @@ function StaffDashboard() {
             </table>
           </div>
         )}
-
 
         {section === 'help' && (
           <div>

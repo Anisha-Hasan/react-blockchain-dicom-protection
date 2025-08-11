@@ -7,6 +7,7 @@
 
 .dicom-stat-card {
   flex: 1;
+  margin-top: 30px;
   background-color: #121212;
   color: #cac8c8;
   border-radius: 12px;
@@ -21,7 +22,8 @@
 }
 
 .dicom-stat-card:hover{
-    border: 0.5px solid #9b67cc;
+    transform: translateY(-5px);
+  box-shadow: 0 6px 14px rgba(235, 227, 227, 0.1);
 }
 
 .dicom-stat-card h3 {
@@ -31,11 +33,22 @@
 }
 
 .stat-value {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin-top: 10px;
   color: #5e3ea1; /* Purple accent for numbers */
 }
+
+.gas-fee-mini {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #cac8c8;
+  background: #272626;
+  padding: 5px 8px;
+  border-radius: 6px;
+}
+
 
 .dicom-stat-button {
   margin-top: auto;
@@ -57,6 +70,104 @@
   border: 1px solid #d3b9eb;
   box-shadow: 0 0 8px #d3b9eb;
 }
+ 
+/* Gas Fee Card */
+
+.gas-fee-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px; /* space before Today's Upload History */
+}
+
+.card.gas-fee-card {
+  background-color: #121212;
+  border-radius: 12px;
+  padding: 20px;
+  color: #cac8c8;
+  border: rgb(52, 51, 51) 0.5px solid;
+  box-shadow: 0 4px 8px rgba(235, 227, 227, 0.1);
+  width: 450px;       
+  height: 250px;      
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card.gas-fee-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 14px rgba(235, 227, 227, 0.1);
+}
+
+.refresh-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #cac8c8; /* or whatever accent color you use */
+  transition: transform 0.2s ease;
+}
+
+.refresh-btn:hover {
+  transform: rotate(90deg);
+}
+
+
+.gas-fee-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gas-fee-header h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.gas-fee-main {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.gas-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color:#5e3ea1;
+  display: block;
+}
+
+.gas-cost {
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+.gas-status {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 1.1rem;
+}
+
+.gas-updated {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* Status colors */
+.low-fee {
+  color: #4caf50; /* green */
+}
+
+.medium-fee {
+  color: #ff9800; /* orange */
+}
+
+.high-fee {
+  color: #f44336; /* red */
+}
+
 
 /* Table Styling */
 .dicom-table {

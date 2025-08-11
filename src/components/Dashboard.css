@@ -49,12 +49,7 @@ body, html {
 
 /* Gradient text */
 .sidebar h2.gradient-text {
-  background: radial-gradient(
-    circle at 5% 15%,
-    #7450b4 0%,
-    #2f3267 40%,
-    #04040c 98%
-  );
+  background: #5e3ea1;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -136,6 +131,8 @@ body, html {
   justify-content: space-between;
   align-items: center;
   padding: 25px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   background: #1f1f1f; /* subtle dark background */
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -149,6 +146,8 @@ body, html {
   color: #a855f7; /* purple */
   cursor: pointer;
   margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
   font-size: 1.6rem;
   font-weight: 600;
   transition: color 0.3s ease;
@@ -162,6 +161,8 @@ body, html {
   font-size: 1.4rem;
   padding: 8px 12px;
   border-radius: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   border: 1px solid #666;
   background-color: #2a2a2a;
   color: #fff;
@@ -175,6 +176,8 @@ body, html {
 }
 
 .role-text {
+  margin-top: 10px;
+  margin-bottom: 10px;
   color: #bbb;
   font-size: 0.95rem;
 }

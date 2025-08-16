@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
+import './Logs.css';
 import Chat from './Chat';
 import { FaFileMedical, FaQuestionCircle } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
 import { IoPeopleSharp } from "react-icons/io5";
 import { RiLogoutBoxLine } from "react-icons/ri";
+import { LuRefreshCw } from "react-icons/lu";
 
 function DoctorDashboard() {
   const [section, setSection] = useState('welcome');
@@ -27,6 +29,28 @@ function DoctorDashboard() {
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const closeSidebar = () => setIsSidebarOpen(false);
+
+  // Dummy Gas Fee Data
+  const [gasPrice, setGasPrice] = useState("25 Gwei");
+  const [gasCost, setGasCost] = useState("0.002 ETH (~$3.50)");
+  const [gasStatus, setGasStatus] = useState("Normal");
+  const [lastUpdated, setLastUpdated] = useState("2025-08-10 14:00");
+
+  const refreshGasFee = () => {
+    // Just updating with new dummy values
+    setGasPrice("28 Gwei");
+    setGasCost("0.0022 ETH (~$3.80)");
+    setGasStatus("Slightly High");
+    setLastUpdated(new Date().toLocaleString());
+  };
+
+  // Function to determine class based on gas status instead of Gwei value
+  const getGasStatusClass = () => {
+    const statusLower = gasStatus.toLowerCase();
+    if (statusLower.includes("low")) return "low-fee";
+    if (statusLower.includes("high")) return "high-fee";
+    return "medium-fee"; // for normal
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -104,6 +128,98 @@ function DoctorDashboard() {
           <div>
             <h2>My Requests</h2>
             <button className="btn btn-primary mb-2">+ New Request</button>
+
+            {/* Stats Section */}
+            <div className="dicom-stats">
+              <div className="dicom-stat-card">
+                <h3>No. of Request Granted</h3>
+                <p className="stat-value">12</p>
+
+                {/* NEW - Gas Fee Section */}
+                <div className="gas-fee-mini">
+                  <strong>Gas Used:</strong> 0.015 ETH (~$25.00)
+                </div>
+
+                <button
+                  className="dicom-stat-button"
+                  onClick={() => {
+                    const todayRow = document.getElementById("today-table");
+                    if (todayRow) {
+                      todayRow.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                >
+                  View
+                </button>
+              </div>
+
+              <div className="dicom-stat-card">
+                <h3>No. of Request Revoked</h3>
+                <p className="stat-value">12</p>
+
+                {/* NEW - Gas Fee Section */}
+                <div className="gas-fee-mini">
+                  <strong>Gas Used:</strong> 0.015 ETH (~$25.00)
+                </div>
+
+                <button
+                  className="dicom-stat-button"
+                  onClick={() => {
+                    const todayRow = document.getElementById("today-table");
+                    if (todayRow) {
+                      todayRow.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                >
+                  View
+                </button>
+              </div>
+
+              <div className="dicom-stat-card">
+                <h3>No. of Request Pending</h3>
+                <p className="stat-value">3</p>
+
+                {/* NEW - Gas Fee Section */}
+                <div className="gas-fee-mini">
+                  <strong>Gas Used:</strong> 0.004 ETH (~$6.70)
+                </div>
+
+                <button
+                  className="dicom-stat-button"
+                  onClick={() => {
+                    const todayRow = document.getElementById("today-table");
+                    if (todayRow) {
+                      todayRow.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                >
+                  View
+                </button>
+              </div>
+            </div>
+
+            {/* Gas Fee Tracker Card */}
+            <div className="gas-fee-container">
+              <div className="card gas-fee-card">
+                <div className="gas-fee-header">
+                  <h3>Gas Fee Tracker</h3>
+                  <button className="refresh-btn" onClick={refreshGasFee}>
+                    <LuRefreshCw size={18} />
+                  </button>
+                </div>
+
+                <div className="gas-fee-main">
+                  <span className="gas-price">{gasPrice}</span>
+                  <span className="gas-cost">{gasCost}</span>
+                </div>
+
+                <div className={`gas-status ${getGasStatusClass()}`}>
+                  Status: {gasStatus}
+                </div>
+                <div className="gas-updated">Updated: {lastUpdated}</div>
+              </div>
+            </div>
+
             {requests.length > 0 ? (
               <table className="table">
                 <thead>

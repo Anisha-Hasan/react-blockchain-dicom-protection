@@ -155,6 +155,21 @@
   margin-top: 8px;
 }
 
+/*New Request Button*/
+.btn.btn-primary.mb-2{
+    color: #cac8c8;
+    background: #272626;
+    margin-top: 30px;
+    border:none;
+    font-size: 1rem; /* Slightly larger font size */
+    padding: 5px 10px; /* More padding for a better look */
+    border-radius: 8px; /* Rounded corners */
+}
+
+.btn.btn-primary.mb-2:hover {
+    border: 1px solid #5e3ea1;
+}
+
 /* Status colors */
 .low-fee {
   color: #4caf50; /* green */

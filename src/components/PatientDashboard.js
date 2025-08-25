@@ -9,15 +9,21 @@ import { LuLogs } from "react-icons/lu";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { LuRefreshCw } from "react-icons/lu";
 
+const ETHERSCAN_API_KEY = process.env.REACT_APP_ETHERSCAN_API_KEY || 'YOUR_KEY_HERE';
+const EST_GAS_UNITS = 50000; // reasonable default for simple write txs
+
 function PatientDashboard() {
   const [section, setSection] = useState('welcome');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const sidebarRef = useRef(null);
   const patientName = 'Mark';
 
+  // ------- Demo data -------
   const [accessRequests, setAccessRequests] = useState([
-    { id: 1, doctor: 'Dr. Smith', reason: 'Needs to review MRI scan', status: 'Pending', gasFee: '0.00021 ETH' },
-    { id: 2, doctor: 'Dr. Johnson', reason: 'Consult for treatment plan', status: 'Pending', gasFee: '0.00018 ETH' }
+    // add optional txHash when you actually send a tx to get real gas used
+    // { id: 99, doctor: 'Dr. Example', reason: 'demo', status: 'Accepted', gasFee: '-', txHash: '0x...' },
+    { id: 1, doctor: 'Dr. Smith', reason: 'Needs to review MRI scan', status: 'Pending', gasFee: '—' },
+    { id: 2, doctor: 'Dr. Johnson', reason: 'Consult for treatment plan', status: 'Pending', gasFee: '—' }
   ]);
 
   const myDicoms = [
@@ -31,29 +37,153 @@ function PatientDashboard() {
     { id: 3, doctor: 'Dr. Brown', dicomName: 'Spine_CT.dcm', date: '2025-07-21', status: 'Granted' }
   ];
 
-  // Dummy Gas Fee Data
-  const [gasPrice, setGasPrice] = useState("25 Gwei");
-  const [gasCost, setGasCost] = useState("0.002 ETH (~$3.50)");
-  const [gasStatus, setGasStatus] = useState("Normal");
-  const [lastUpdated, setLastUpdated] = useState("2025-08-10 14:00");
+  // ===== Gas oracle + price =====
+  const [gasPrice, setGasPrice] = useState("Loading...");
+  const [gasBands, setGasBands] = useState({ safe: null, propose: null, fast: null });
+  const [gasStatus, setGasStatus] = useState("Loading...");
+  const [lastUpdated, setLastUpdated] = useState("Never");
+  const [ethUsd, setEthUsd] = useState(null);
 
-  const refreshGasFee = () => {
-    // Just updating with new dummy values
-    setGasPrice("28 Gwei");
-    setGasCost("0.0022 ETH (~$3.80)");
-    setGasStatus("Slightly High");
-    setLastUpdated(new Date().toLocaleString());
+  // Aggregates for the 3 cards
+  const [cardGas, setCardGas] = useState({
+    acceptedEth: 0,
+    declinedEth: 0,
+    pendingEstEth: 0
+  });
+
+  const formatEthUsd = (eth) => {
+    const ethNum = Number(eth || 0);
+    const ethStr = `${ethNum.toFixed(4)} ETH`;
+    if (ethUsd) return `${ethStr} (~$${(ethNum * ethUsd).toFixed(2)})`;
+    return ethStr;
   };
 
-  // Function to determine class based on gas status instead of Gwei value
+  // ---- Etherscan fetchers ----
+  const fetchGasAndPrice = async () => {
+    try {
+      const [gasRes, priceRes] = await Promise.all([
+        fetch(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_API_KEY}`),
+        fetch(`https://api.etherscan.io/api?module=stats&action=ethprice&apikey=${ETHERSCAN_API_KEY}`)
+      ]);
+
+      const gasData = await gasRes.json();
+      const priceData = await priceRes.json();
+
+      if (gasData.status === "1") {
+        const safe = Number(gasData.result.SafeGasPrice);
+        const propose = Number(gasData.result.ProposeGasPrice);
+        const fast = Number(gasData.result.FastGasPrice);
+
+        setGasBands({ safe, propose, fast });
+        setGasPrice(`${propose} Gwei`);
+        setGasStatus(`Low: ${safe} | Avg: ${propose} | High: ${fast}`);
+        setLastUpdated(new Date().toLocaleString());
+      } else {
+        setGasPrice("Error");
+        setGasStatus("Failed to fetch");
+      }
+
+      if (priceData.status === "1") {
+        setEthUsd(Number(priceData.result.ethusd));
+      }
+    } catch (e) {
+      console.error("Gas/price fetch error:", e);
+      setGasPrice("Error");
+      setGasStatus("Check console");
+    }
+  };
+
+  // Get actual gas used for a tx via receipt (proxy RPC)
+  const fetchTxCostEth = async (txHash) => {
+    try {
+      const r = await fetch(
+        `https://api.etherscan.io/api?module=proxy&action=eth_getTransactionReceipt&txhash=${txHash}&apikey=${ETHERSCAN_API_KEY}`
+      );
+      const j = await r.json();
+      const receipt = j?.result;
+      if (!receipt) return null;
+
+      const gasUsed = BigInt(receipt.gasUsed); // hex string -> BigInt
+      let gasPriceWei = null;
+
+      if (receipt.effectiveGasPrice) {
+        gasPriceWei = BigInt(receipt.effectiveGasPrice);
+      } else {
+        // fallback: fetch tx to get gasPrice
+        const t = await fetch(
+          `https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash=${txHash}&apikey=${ETHERSCAN_API_KEY}`
+        );
+        const tj = await t.json();
+        if (tj?.result?.gasPrice) gasPriceWei = BigInt(tj.result.gasPrice);
+      }
+      if (!gasPriceWei) return null;
+
+      const wei = gasUsed * gasPriceWei;
+      const eth = Number(wei) / 1e18;
+      return eth;
+    } catch (e) {
+      console.error("fetchTxCostEth error:", e);
+      return null;
+    }
+  };
+
+  // Compute the 3 card totals (actuals + estimate for pending)
+  const recomputeCardGas = async () => {
+    const accepted = accessRequests.filter(r => r.status === 'Accepted');
+    const declined = accessRequests.filter(r => r.status === 'Declined');
+    const pending = accessRequests.filter(r => r.status === 'Pending');
+
+    // Sum actual costs for any with txHash
+    const sumCosts = async (arr) => {
+      let total = 0;
+      for (const r of arr) {
+        if (r.txHash) {
+          const c = await fetchTxCostEth(r.txHash);
+          if (c != null) total += c;
+        }
+      }
+      return total;
+    };
+
+    const [acceptedEth, declinedEth] = await Promise.all([
+      sumCosts(accepted),
+      sumCosts(declined),
+    ]);
+
+    // Estimate cost to process all pending using current Propose gas price
+    let pendingEstEth = 0;
+    if (gasBands.propose) {
+      const perTx = (EST_GAS_UNITS * gasBands.propose) / 1e9; // gwei -> eth
+      pendingEstEth = pending.length * perTx;
+    }
+
+    setCardGas({ acceptedEth, declinedEth, pendingEstEth });
+  };
+
+  useEffect(() => {
+    fetchGasAndPrice();
+  }, []);
+
+  useEffect(() => {
+    // recompute when requests or gas price band changes
+    recomputeCardGas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessRequests, gasBands.propose]);
+
+  const refreshGasFee = async () => {
+    await fetchGasAndPrice();
+    await recomputeCardGas();
+  };
+
   const getGasStatusClass = () => {
-    const statusLower = gasStatus.toLowerCase();
-    if (statusLower.includes("low")) return "low-fee";
-    if (statusLower.includes("high")) return "high-fee";
-    return "medium-fee"; // for normal
+    if (gasPrice.includes("Error")) return "high-fee";
+    const gwei = parseInt(gasPrice);
+    if (gwei < 20) return "low-fee";
+    if (gwei > 50) return "high-fee";
+    return "medium-fee";
   };
 
-
+  // ---- UI helpers & actions ----
   const handleAccept = (id) => {
     setAccessRequests((prev) =>
       prev.map((req) =>
@@ -70,13 +200,8 @@ function PatientDashboard() {
     );
   };
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  };
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const closeSidebar = () => setIsSidebarOpen(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -100,14 +225,8 @@ function PatientDashboard() {
     };
   }, [isSidebarOpen]);
 
-  const navItemClass = (value) =>
-    `nav-item ${section === value ? 'selected' : ''}`;
-
-  const getStatusColor = (status) => {
-    if (status === 'Accepted') return 'green';
-    if (status === 'Declined') return 'red';
-    return 'orange';
-  };
+  const navItemClass = (value) => `nav-item ${section === value ? 'selected' : ''}`;
+  const getStatusColor = (status) => (status === 'Accepted' ? 'green' : status === 'Declined' ? 'red' : 'orange');
 
   return (
     <div className={`dashboard-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
@@ -241,51 +360,25 @@ function PatientDashboard() {
             {/* Stats Section */}
             <div className="dicom-stats">
               <div className="dicom-stat-card">
-                <h3>No. of Request <span style={{ color: 'green' }}>Granted</span></h3>
+                <h3>No. of Request <span style={{ color: 'green' }}>Accepted</span></h3>
                 <p className="stat-value">
-                  {accessLog.filter(log => log.status === 'Granted').length}
+                  {accessRequests.filter(req => req.status === 'Accepted').length}
                 </p>
-
-                {/* NEW - Gas Fee Section */}
                 <div className="gas-fee-mini">
-                  <strong>Gas Used:</strong> 0.015 ETH (~$25.00)
+                  <strong>Gas Used:</strong> {formatEthUsd(cardGas.acceptedEth)}
                 </div>
-
-                <button
-                  className="dicom-stat-button"
-                  onClick={() => {
-                    const todayRow = document.getElementById("today-table");
-                    if (todayRow) {
-                      todayRow.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  View
-                </button>
+                <button className="dicom-stat-button">View</button>
               </div>
 
               <div className="dicom-stat-card">
-                <h3>No. of Request <span style={{ color: 'red' }}>Revoked</span></h3>
+                <h3>No. of Request <span style={{ color: 'red' }}>Declined</span></h3>
                 <p className="stat-value">
-                  {accessLog.filter(log => log.status === 'Revoked').length}
+                  {accessRequests.filter(req => req.status === 'Declined').length}
                 </p>
-
-                {/* NEW - Gas Fee Section */}
                 <div className="gas-fee-mini">
-                  <strong>Gas Used:</strong> 0.015 ETH (~$25.00)
+                  <strong>Gas Used:</strong> {formatEthUsd(cardGas.declinedEth)}
                 </div>
-
-                <button
-                  className="dicom-stat-button"
-                  onClick={() => {
-                    const todayRow = document.getElementById("today-table");
-                    if (todayRow) {
-                      todayRow.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  View
-                </button>
+                <button className="dicom-stat-button">View</button>
               </div>
 
               <div className="dicom-stat-card">
@@ -293,23 +386,10 @@ function PatientDashboard() {
                 <p className="stat-value">
                   {accessRequests.filter(req => req.status === 'Pending').length}
                 </p>
-
-                {/* NEW - Gas Fee Section */}
                 <div className="gas-fee-mini">
-                  <strong>Gas Used:</strong> 0.004 ETH (~$6.70)
+                  <strong>Est. To Process:</strong> {formatEthUsd(cardGas.pendingEstEth)}
                 </div>
-
-                <button
-                  className="dicom-stat-button"
-                  onClick={() => {
-                    const todayRow = document.getElementById("today-table");
-                    if (todayRow) {
-                      todayRow.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  View
-                </button>
+                <button className="dicom-stat-button">View</button>
               </div>
             </div>
 
@@ -325,7 +405,6 @@ function PatientDashboard() {
 
                 <div className="gas-fee-main">
                   <span className="gas-price">{gasPrice}</span>
-                  <span className="gas-cost">{gasCost}</span>
                 </div>
 
                 <div className={`gas-status ${getGasStatusClass()}`}>
@@ -334,7 +413,6 @@ function PatientDashboard() {
                 <div className="gas-updated">Updated: {lastUpdated}</div>
               </div>
             </div>
-
 
             {accessLog.length === 0 ? (
               <p>No access logs yet.</p>

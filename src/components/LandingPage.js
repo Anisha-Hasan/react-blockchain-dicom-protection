@@ -18,14 +18,12 @@ function LandingPage() {
               <button className="btn btn-success btn-lg">Login as Doctor</button>
             </Link>
             <Link to="/staff-login">
-              <button className="btn btn-dark btn-lg">Login as Staff</button>
+              <button className="btn btn-dark btn-lg">Login as Admin</button>
             </Link>
           </div>
         </div>
 
-        <div className="hero-image">
-          <img src="/heroi.png" alt="Illustration" />
-        </div>
+        
       </div>
 
       {/* Footer Section */}

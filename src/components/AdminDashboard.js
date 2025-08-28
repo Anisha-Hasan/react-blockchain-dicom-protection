@@ -1,4 +1,4 @@
-/* Instead of the word "Admin", "Staff" is used in the code */
+
 import React, { useState } from 'react';
 import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
@@ -10,10 +10,10 @@ import { IoMdSettings } from 'react-icons/io';
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { LuRefreshCw } from "react-icons/lu";
 
-function StaffDashboard() {
+function AdminDashboard() {
   const [section, setSection] = useState('welcome');
 
-  const staffName = 'John Doe';
+  const adminName = 'John Doe';
 
   const [patientID, setPatientID] = useState('');
   const [patientName, setPatientName] = useState('');
@@ -139,14 +139,14 @@ function StaffDashboard() {
         {section === 'welcome' && (
           <div>
             <h2>
-              Welcome <span className="highlight">{staffName}!</span>
+              Welcome <span className="highlight">{adminName}!</span>
             </h2>
             <p>Use the menu to upload DICOMs or manage your profile.</p>
           </div>
         )}
 
         {section === 'profile' && (
-          <ProfileSettings name={staffName} uniqueId="ST001" role="Staff" />
+          <ProfileSettings name={adminName} uniqueId="ST001" role="Admin" />
         )}
 
         {section === 'upload' && (
@@ -339,4 +339,4 @@ function StaffDashboard() {
   );
 }
 
-export default StaffDashboard;
+export default AdminDashboard;

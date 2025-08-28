@@ -27,8 +27,8 @@ function PatientDashboard() {
   ]);
 
   const myDicoms = [
-    { id: 1, name: 'Brain_MRI.dcm', uploadedBy: 'Staff John Doe', date: '2025-07-23' },
-    { id: 2, name: 'Chest_Xray.dcm', uploadedBy: 'Staff Jane Doe', date: '2025-07-20' }
+    { id: 1, name: 'Brain_MRI.dcm', uploadedBy: 'Admin John Doe', date: '2025-07-23' },
+    { id: 2, name: 'Chest_Xray.dcm', uploadedBy: 'Admin Jane Doe', date: '2025-07-20' }
   ];
 
   const accessLog = [

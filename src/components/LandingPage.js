@@ -17,7 +17,7 @@ function LandingPage() {
             <Link to="/doctor-login">
               <button className="btn btn-success btn-lg">Login as Doctor</button>
             </Link>
-            <Link to="/staff-login">
+            <Link to="/admin-login">
               <button className="btn btn-dark btn-lg">Login as Admin</button>
             </Link>
           </div>

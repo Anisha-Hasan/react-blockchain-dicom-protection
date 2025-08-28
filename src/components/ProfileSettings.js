@@ -40,7 +40,7 @@ function ProfileSettings({ name, uniqueId, role = 'Patient' }) {
         {/* Name Section */}
         <div className="name-section">
           <h2
-            className="staff-name"
+            className="admin-name"
             onClick={() => {
               const newName = prompt('Enter your name:', fullName);
               if (newName) setFullName(newName);

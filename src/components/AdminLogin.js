@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import './Form.css';
 import { useNavigate } from 'react-router-dom';
 
-function StaffLogin() {
-  const [staffID, setStaffID] = useState('');
+function AdminLogin() {
+  const [adminID, setAdminID] = useState('');
   const [password, setPassword] = useState('');
   const [attempts, setAttempts] = useState(0);
 
@@ -13,11 +13,11 @@ function StaffLogin() {
     event.preventDefault();
 
     // Fake correct credentials for testing
-    const correctID = 'staff001';
+    const correctID = 'admin001';
     const correctPassword = 'admin123';
 
-    if (staffID === correctID && password === correctPassword) {
-      navigate('/staff-dashboard');
+    if (adminID === correctID && password === correctPassword) {
+      navigate('/admin-dashboard');
     } else {
       const newAttempts = attempts + 1;
       setAttempts(newAttempts);
@@ -33,16 +33,16 @@ function StaffLogin() {
   return (
     <div className="login-hero">
       <div className="form-container">
-        <h2 className="mb-4">Staff Login</h2>
+        <h2 className="mb-4">Admin Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label>Staff ID</label>
+            <label>Admin ID</label>
             <input
               type="text"
               className="form-control"
-              value={staffID}
-              onChange={(e) => setStaffID(e.target.value)}
-              placeholder="Enter your Staff ID"
+              value={adminID}
+              onChange={(e) => setAdminID(e.target.value)}
+              placeholder="Enter your Admin ID"
             />
           </div>
           <div className="mb-3">
@@ -64,4 +64,4 @@ function StaffLogin() {
   );
 }
 
-export default StaffLogin;
+export default AdminLogin;

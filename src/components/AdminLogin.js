@@ -1,32 +1,41 @@
-import React, { useState } from 'react';
-import './Form.css';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import "./Form.css";
+import { useNavigate } from "react-router-dom";
 
 function AdminLogin() {
-  const [adminID, setAdminID] = useState('');
-  const [password, setPassword] = useState('');
+  const [adminID, setAdminID] = useState("");
+  const [password, setPassword] = useState("");
   const [attempts, setAttempts] = useState(0);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Fake correct credentials for testing
-    const correctID = 'admin001';
-    const correctPassword = 'admin123';
+    try {
+      const response = await fetch("http://localhost:4000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: adminID, password }),
+      });
 
-    if (adminID === correctID && password === correctPassword) {
-      navigate('/admin-dashboard');
-    } else {
-      const newAttempts = attempts + 1;
-      setAttempts(newAttempts);
+      const data = await response.json();
 
-      if (newAttempts >= 3) {
-        alert('Too many failed attempts.');
+      if (response.ok && data.role === "admin") {
+        // ✅ Successful login → just navigate, no popup
+        navigate("/admin-dashboard");
       } else {
-        alert(`Incorrect credentials. You have ${3 - newAttempts} tries left.`);
+        const newAttempts = attempts + 1;
+        setAttempts(newAttempts);
+
+        if (newAttempts >= 3) {
+          alert("Too many failed attempts.");
+        } else {
+          alert(data.message || `Incorrect credentials. ${3 - newAttempts} tries left.`);
+        }
       }
+    } catch (error) {
+      alert("⚠️ Server error, please try again.");
     }
   };
 

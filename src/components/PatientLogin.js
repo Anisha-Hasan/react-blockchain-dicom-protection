@@ -1,32 +1,48 @@
-import React, { useState } from 'react';
-import './Form.css'; 
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import "./Form.css";
+import { useNavigate } from "react-router-dom";
 
 function PatientLogin() {
-  const [patientID, setPatientID] = useState('');
-  const [password, setPassword] = useState('');
+  const [patientID, setPatientID] = useState("");
+  const [password, setPassword] = useState("");
   const [attempts, setAttempts] = useState(0);
+  const [errorMessage, setErrorMessage] = useState(""); // ✅ Error message in UI
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault(); // stops page from reloading
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    // For now: fake correct ID & password
-    const correctID = '12345';
-    const correctPassword = 'pass123';
+    try {
+      const res = await fetch("http://localhost:4000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: patientID, password }),
+      });
 
-    if (patientID === correctID && password === correctPassword) {
-      navigate('/patient-dashboard'); // sends user to dashboard
-    } else {
-      const newAttempts = attempts + 1;
-      setAttempts(newAttempts);
+      const data = await res.json();
 
-      if (newAttempts >= 3) {
-        alert('Too many failed attempts.');
+      if (res.ok) {
+        if (data.role === "patient") {
+          navigate("/patient-dashboard"); // ✅ redirect silently
+        } else {
+          setErrorMessage("You are not authorized as a patient.");
+        }
       } else {
-        alert(`Wrong ID or Password. You have ${3 - newAttempts} tries left.`);
+        const newAttempts = attempts + 1;
+        setAttempts(newAttempts);
+
+        if (newAttempts >= 3) {
+          setErrorMessage("Too many failed attempts. Please try again later.");
+        } else {
+          setErrorMessage(
+            data.message || `Wrong ID or Password. You have ${3 - newAttempts} tries left.`
+          );
+        }
       }
+    } catch (error) {
+      console.error("❌ Login Error:", error);
+      setErrorMessage("Something went wrong. Please try again.");
     }
   };
 
@@ -36,13 +52,13 @@ function PatientLogin() {
         <h2 className="mb-4">Patient Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label>Patient ID/ Mobile No.</label>
+            <label>Patient ID / Mobile No.</label>
             <input
-             type="text"
-             className="form-control"
-             value={patientID}
-             onChange={(e) => setPatientID(e.target.value)}
-             placeholder="Enter your Patient ID/ Registered Mobile No."
+              type="text"
+              className="form-control"
+              value={patientID}
+              onChange={(e) => setPatientID(e.target.value)}
+              placeholder="Enter your Patient ID / Registered Mobile No."
             />
           </div>
           <div className="mb-3">
@@ -55,7 +71,10 @@ function PatientLogin() {
               placeholder="Enter your password"
             />
           </div>
-          <button type="submit" className="btn btn-primary">Login</button>
+          {errorMessage && <p className="text-danger">{errorMessage}</p>} {/* ✅ error below form */}
+          <button type="submit" className="btn btn-primary">
+            Login
+          </button>
         </form>
       </div>
     </div>

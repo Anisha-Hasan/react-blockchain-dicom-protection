@@ -1,18 +1,20 @@
 
 import React, { useState } from 'react';
 import ProfileSettings from './ProfileSettings';
+import { useNavigate } from "react-router-dom";
 import './Dashboard.css';
 import './UploadDicom.css';
 import './Logs.css';
 import crypto from 'crypto-js';
-import { FaUpload, FaClipboardList, FaQuestionCircle } from 'react-icons/fa';
+import { FaUpload, FaClipboardList, FaQuestionCircle, FaRegAddressBook } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { LuRefreshCw } from "react-icons/lu";
+import AddPatient from './AddPatient';
 
 function AdminDashboard() {
   const [section, setSection] = useState('welcome');
-
+  const navigate = useNavigate();
   const adminName = 'John Doe';
 
   const [patientID, setPatientID] = useState('');
@@ -122,6 +124,9 @@ function AdminDashboard() {
             </li>
             <li onClick={() => setSection('log')}>
               <FaClipboardList className="icon" /> Upload Log
+            </li>
+            <li onClick={() => setSection('add-patient')}>
+              <FaRegAddressBook className="icon" /> Add Patient
             </li>
             <li onClick={() => setSection('help')}>
               <FaQuestionCircle className="icon" /> Help/About
@@ -324,6 +329,10 @@ function AdminDashboard() {
               </tbody>
             </table>
           </div>
+        )}
+
+        {section === 'add-patient' && (
+          <AddPatient />
         )}
 
         {section === 'help' && (

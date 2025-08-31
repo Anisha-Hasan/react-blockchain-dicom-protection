@@ -238,3 +238,8 @@ body, html {
 input[type="file"] {
   display: none;
 }
+
+.btn.btn-success{
+  margin-top: 15px;
+  padding: 10px 20px
+}

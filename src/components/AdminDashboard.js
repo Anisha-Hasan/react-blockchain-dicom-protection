@@ -11,6 +11,7 @@ import { IoMdSettings } from 'react-icons/io';
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { LuRefreshCw } from "react-icons/lu";
 import AddPatient from './AddPatient';
+import UploadDicom from './UploadDicom';
 
 function AdminDashboard() {
   const [section, setSection] = useState('welcome');
@@ -155,71 +156,7 @@ function AdminDashboard() {
         )}
 
         {section === 'upload' && (
-          <div className="upload-dicom-container">
-            <div className="upload-card">
-              <h1>Upload DICOM</h1>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Patient ID</label>
-                  <input
-                    type="text"
-                    value={patientID}
-                    onChange={(e) => setPatientID(e.target.value)}
-                    placeholder="Enter Patient ID"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Patient Name</label>
-                  <input
-                    type="text"
-                    value={patientName}
-                    onChange={(e) => setPatientName(e.target.value)}
-                    placeholder="Enter Patient Name"
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>Choose DICOM File (.dcm only)</label>
-                <input
-                  type="file"
-                  accept=".dcm"
-                  onChange={handleFileChange}
-                  className="dicom-file-input"
-                />
-              </div>
-
-              <div className="button-row">
-                <button className="upload-btn" onClick={handleUpload}>
-                  Upload
-                </button>
-              </div>
-
-              {fileHash && (
-                <div className="mt-3">
-                  <strong>File Hash (SHA-256):</strong>
-                  <p>{fileHash}</p>
-                </div>
-              )}
-
-              {ipfsLink && (
-                <div className="mt-2">
-                  <strong>IPFS Link:</strong>
-                  <a href={ipfsLink} target="_blank" rel="noreferrer">
-                    {ipfsLink}
-                  </a>
-                </div>
-              )}
-
-              {status && (
-                <div className="mt-2">
-                  <p>{status}</p>
-                </div>
-              )}
-            </div>
-          </div>
+          <UploadDicom/>
         )}
 
         {section === 'log' && (

@@ -24,6 +24,7 @@ function PatientLogin() {
 
       if (res.ok) {
         if (data.role === "patient") {
+          localStorage.setItem("patientID", patientID);
           navigate("/patient-dashboard"); // ✅ redirect silently
         } else {
           setErrorMessage("You are not authorized as a patient.");

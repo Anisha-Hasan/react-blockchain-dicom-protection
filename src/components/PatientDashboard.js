@@ -3,11 +3,13 @@ import ProfileSettings from './ProfileSettings';
 import './Dashboard.css';
 import './Logs.css';
 import Chat from './Chat';
+import MyDicoms from './MyDicom';
 import { FaFileMedical, FaRegImages, FaQuestionCircle } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
 import { LuLogs } from "react-icons/lu";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { LuRefreshCw } from "react-icons/lu";
+
 
 const ETHERSCAN_API_KEY = process.env.REACT_APP_ETHERSCAN_API_KEY || 'YOUR_KEY_HERE';
 const EST_GAS_UNITS = 50000; // reasonable default for simple write txs
@@ -25,11 +27,6 @@ function PatientDashboard() {
     { id: 1, doctor: 'Dr. Smith', reason: 'Needs to review MRI scan', status: 'Pending', gasFee: '—' },
     { id: 2, doctor: 'Dr. Johnson', reason: 'Consult for treatment plan', status: 'Pending', gasFee: '—' }
   ]);
-
-  const myDicoms = [
-    { id: 1, name: 'Brain_MRI.dcm', uploadedBy: 'Admin John Doe', date: '2025-07-23' },
-    { id: 2, name: 'Chest_Xray.dcm', uploadedBy: 'Admin Jane Doe', date: '2025-07-20' }
-  ];
 
   const accessLog = [
     { id: 1, doctor: 'Dr. Smith', dicomName: 'Brain_MRI.dcm', date: '2025-07-23', status: 'Granted' },
@@ -318,40 +315,8 @@ function PatientDashboard() {
           </div>
         )}
 
-        {section === 'dicoms' && (
-          <div>
-            <h2>My DICOMs</h2>
-            {myDicoms.length === 0 ? (
-              <p>No DICOM files found.</p>
-            ) : (
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>File Name</th>
-                    <th>Uploaded By</th>
-                    <th>Upload Date</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {myDicoms.map((dicom) => (
-                    <tr key={dicom.id}>
-                      <td>{dicom.id}</td>
-                      <td>{dicom.name}</td>
-                      <td>{dicom.uploadedBy}</td>
-                      <td>{dicom.date}</td>
-                      <td>
-                        <button className="btn btn-primary btn-sm">Download</button>{' '}
-                        <button className="btn btn-warning btn-sm">Revoke Access</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-        )}
+        {section === "dicoms" && <MyDicoms />}
+
 
         {section === 'log' && (
           <div>

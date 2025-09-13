@@ -35,6 +35,11 @@ const MyRequests = () => {
   const [gasStatus, setGasStatus] = useState("Normal");
   const [lastUpdated, setLastUpdated] = useState("2025-08-10 14:00");
 
+  // New Request Search
+  const [showSearch, setShowSearch] = useState(false);
+  const [patientId, setPatientId] = useState("");
+  const [searchResult, setSearchResult] = useState(null);
+
   const refreshGasFee = () => {
     setGasPrice("28 Gwei");
     setGasCost("0.0022 ETH (~$3.80)");
@@ -49,10 +54,65 @@ const MyRequests = () => {
     return "medium-fee";
   };
 
+  const handleSearch = () => {
+    const result = requests.find((req) => req.id.toLowerCase() === patientId.toLowerCase());
+    setSearchResult(result || { id: "Not Found", patient: "-", reason: "-", date: "-", status: "-" });
+  };
+
   return (
     <div>
       <h2>My Requests</h2>
-      <button className="btn btn-primary mb-2">+ New Request</button>
+
+      {/* New Request + Search in one row */}
+      <div className="d-flex align-items-center mb-3">
+        <button
+          className="btn btn-primary me-3"
+          onClick={() => setShowSearch(!showSearch)}
+        >
+          + New Request
+        </button>
+        {showSearch && (
+          <div className="d-flex flex-grow-1">
+            <input
+              type="text"
+              className="form-control custom-input me-2"
+              placeholder="Enter Patient ID (e.g. R001)"
+              value={patientId}
+              onChange={(e) => setPatientId(e.target.value)}
+            />
+            <button className="btn btn-success" onClick={handleSearch}>
+              Search
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Show search result below */}
+      {searchResult && (
+        <div className="card p-3 mb-3">
+          <h5>Search Result:</h5>
+          <table className="table table-sm">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Patient</th>
+                <th>Reason</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{searchResult.id}</td>
+                <td>{searchResult.patient}</td>
+                <td>{searchResult.reason}</td>
+                <td>{searchResult.date}</td>
+                <td>{searchResult.status}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Stats Section */}
       <div className="dicom-stats">

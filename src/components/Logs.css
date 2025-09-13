@@ -1,3 +1,27 @@
+/*Search patient*/
+.custom-input {
+  background-color: #1c1c1c; /* dark but visible */
+  color: #ffffff;           /* white text */
+  border: 1px solid #444;   /* subtle default border */
+  transition: all 0.3s ease;
+}
+
+.custom-input::placeholder {
+  color: #888; /* make placeholder visible */
+}
+
+.custom-input:hover {
+  border: 1px solid #a855f7; /* purple border on hover */
+}
+
+.custom-input:focus {
+  background-color: #2a2a2a; /* lighten background when typing */
+  border: 1px solid #a855f7; /* keep purple border */
+  outline: none;
+  box-shadow: 0 0 5px rgba(168, 85, 247, 0.5); /* subtle purple glow */
+}
+
+
 /* Stats Container */
 .dicom-stats {
   display: flex;

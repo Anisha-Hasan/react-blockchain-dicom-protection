@@ -12,6 +12,7 @@ import { RiLogoutBoxLine } from "react-icons/ri";
 import { LuRefreshCw } from "react-icons/lu";
 import AddPatient from './AddPatient';
 import UploadDicom from './UploadDicom';
+import TagPatDoc from './TagPatDoc';
 
 function AdminDashboard() {
   const [section, setSection] = useState('welcome');
@@ -129,6 +130,9 @@ function AdminDashboard() {
             <li onClick={() => setSection('add-patient')}>
               <FaRegAddressBook className="icon" /> Add Patient
             </li>
+            <li onClick={() => setSection('tag')}>
+              <FaRegAddressBook className="icon" /> Tag Patient-Doctor
+            </li>
             <li onClick={() => setSection('help')}>
               <FaQuestionCircle className="icon" /> Help/About
             </li>
@@ -156,7 +160,7 @@ function AdminDashboard() {
         )}
 
         {section === 'upload' && (
-          <UploadDicom/>
+          <UploadDicom />
         )}
 
         {section === 'log' && (
@@ -270,6 +274,10 @@ function AdminDashboard() {
 
         {section === 'add-patient' && (
           <AddPatient />
+        )}
+
+        {section === 'tag' && (
+          <TagPatDoc />
         )}
 
         {section === 'help' && (

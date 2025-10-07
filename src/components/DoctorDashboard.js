@@ -8,6 +8,7 @@ import { FaFileMedical, FaQuestionCircle } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
 import { IoPeopleSharp } from "react-icons/io5";
 import { RiLogoutBoxLine } from "react-icons/ri";
+import MyPatients from './MyPatient';
 
 function DoctorDashboard() {
   const [section, setSection] = useState('welcome');
@@ -104,41 +105,7 @@ function DoctorDashboard() {
         )}
 
         {section === 'patients' && (
-          <div>
-            <h2>My Patients</h2>
-            {patients.length > 0 ? (
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Patient ID</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {patients.map((p) => (
-                    <tr key={p.id}>
-                      <td>{p.id}</td>
-                      <td>{p.name}</td>
-                      <td>
-                        <span className={`badge ${p.permission.toLowerCase()}`}>{p.permission}</span>
-                      </td>
-                      <td>
-                        {p.permission === 'Granted' ? (
-                          <button className="btn btn-primary btn-sm">View DICOMs</button>
-                        ) : (
-                          <button className="btn btn-secondary btn-sm">Request Access</button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <p>No patients yet.</p>
-            )}
-          </div>
+          <MyPatients doctorId="68b0304a83eb31bebeeec4ad"/>
         )}
 
         {section === 'help' && (
